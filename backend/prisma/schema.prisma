@@ -1,0 +1,121 @@
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  SALES
+  WAREHOUSE
+  ACCOUNTS
+}
+
+enum CustomerType {
+  RETAIL
+  WHOLESALE
+  DISTRIBUTOR
+}
+
+enum CustomerStatus {
+  LEAD
+  ACTIVE
+  INACTIVE
+}
+
+enum MovementType {
+  IN
+  OUT
+}
+
+enum ChallanStatus {
+  DRAFT
+  CONFIRMED
+  CANCELLED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role
+  createdAt    DateTime @default(now())
+
+  stockLogs       StockLog[]
+  challansCreated Challan[]
+}
+
+model Customer {
+  id           String         @id @default(cuid())
+  name         String
+  mobile       String
+  email        String
+  businessName String
+  gstNumber    String?
+  customerType CustomerType
+  address      String
+  status       CustomerStatus @default(LEAD)
+  followUpDate DateTime?
+  notes        String?        @db.Text
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  challans Challan[]
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  sku           String   @unique
+  category      String
+  unitPrice     Decimal  @db.Decimal(10, 2)
+  currentStock  Int      @default(0)
+  minStockAlert Int      @default(0)
+  location      String?
+  createdAt     DateTime @default(now())
+
+  stockLogs    StockLog[]
+  challanItems ChallanItem[]
+}
+
+model StockLog {
+  id              String       @id @default(cuid())
+  productId       String
+  product         Product      @relation(fields: [productId], references: [id])
+  quantityChanged Int
+  movementType    MovementType
+  reason          String
+  createdBy       String
+  createdByUser   User         @relation(fields: [createdBy], references: [id])
+  createdAt       DateTime     @default(now())
+}
+
+model Challan {
+  id            String        @id @default(cuid())
+  challanNumber String        @unique
+  customerId    String
+  customer      Customer      @relation(fields: [customerId], references: [id])
+  status        ChallanStatus @default(DRAFT)
+  totalQuantity Int           @default(0)
+  createdBy     String
+  createdByUser User          @relation(fields: [createdBy], references: [id])
+  createdAt     DateTime      @default(now())
+
+  items ChallanItem[]
+}
+
+model ChallanItem {
+  id                  String  @id @default(cuid())
+  challanId           String
+  challan             Challan @relation(fields: [challanId], references: [id], onDelete: Cascade)
+  productId           String
+  product             Product @relation(fields: [productId], references: [id])
+  productNameSnapshot String
+  unitPriceSnapshot   Decimal @db.Decimal(10, 2)
+  quantity            Int
+}
