@@ -1,0 +1,533 @@
+{
+  "info": {
+    "_postman_id": "8f5a6b12-9c3e-4d8e-8a12-1b7c3d4e5f6a",
+    "name": "Mini ERP + CRM Operations Portal API",
+    "description": "Comprehensive Postman collection for the Mini ERP + CRM Operations Portal covering Auth, Products, Inventory Stock Movements, Challans (Draft, Confirm, Cancel), and Customers.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api",
+      "type": "string"
+    },
+    {
+      "key": "adminToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "warehouseToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "salesToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "sampleProductId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "sampleChallanId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "sampleCustomerId",
+      "value": "cust-apex-hardware",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "1. Login as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('adminToken', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@operations.com\",\n  \"password\": \"Admin@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "2. Login as Warehouse",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('warehouseToken', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"warehouse@operations.com\",\n  \"password\": \"Warehouse@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "3. Login as Sales",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.token) {",
+                  "    pm.collectionVariables.set('salesToken', json.data.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"sales@operations.com\",\n  \"password\": \"Sales@123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "4. Register User (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"New Ops Manager\",\n  \"email\": \"ops.manager@operations.com\",\n  \"password\": \"Manager@123\",\n  \"role\": \"WAREHOUSE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "5. Get Current User (/me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products & Stock",
+      "item": [
+        {
+          "name": "1. List Products (with Search & Pagination)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products?page=1&limit=20&search=",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "search", "value": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Create Product (Initial Stock creates StockLog IN)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.id) {",
+                  "    pm.collectionVariables.set('sampleProductId', json.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Precision Ball Bearing 6002-2RS\",\n  \"sku\": \"BRG-6002-2RS-POSTMAN\",\n  \"category\": \"Bearings\",\n  \"unitPrice\": 145.50,\n  \"initialStock\": 30,\n  \"minStockAlert\": 10,\n  \"location\": \"Rack B-01, Bin 9\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products",
+              "host": ["{{baseUrl}}"],
+              "path": ["products"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Product Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{sampleProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{sampleProductId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Update Product (Stock Direct Edit Strictly Forbidden)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Precision Ball Bearing 6002-2RS (Premium)\",\n  \"unitPrice\": 155.00,\n  \"minStockAlert\": 12,\n  \"location\": \"Rack B-01, Bin 10\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{sampleProductId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{sampleProductId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Adjust Stock IN (Warehouse Action writes StockLog)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{warehouseToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 20,\n  \"movementType\": \"IN\",\n  \"reason\": \"Received from Supplier batch #902\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{sampleProductId}}/stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{sampleProductId}}", "stock"]
+            }
+          }
+        },
+        {
+          "name": "6. Adjust Stock OUT (Warehouse Action writes StockLog)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{warehouseToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 5,\n  \"movementType\": \"OUT\",\n  \"reason\": \"Internal QA sample test\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/products/{{sampleProductId}}/stock",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{sampleProductId}}", "stock"]
+            }
+          }
+        },
+        {
+          "name": "7. Get Product Stock Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/products/{{sampleProductId}}/logs",
+              "host": ["{{baseUrl}}"],
+              "path": ["products", "{{sampleProductId}}", "logs"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Challans (Highest Scrutiny)",
+      "item": [
+        {
+          "name": "1. Create Draft Challan (with Item Snapshots)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.id) {",
+                  "    pm.collectionVariables.set('sampleChallanId', json.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{salesToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customerId\": \"{{sampleCustomerId}}\",\n  \"items\": [\n    {\n      \"productId\": \"{{sampleProductId}}\",\n      \"quantity\": 15\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/challans",
+              "host": ["{{baseUrl}}"],
+              "path": ["challans"]
+            }
+          }
+        },
+        {
+          "name": "2. List Challans (with Status Filter)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/challans?page=1&limit=20&status=DRAFT",
+              "host": ["{{baseUrl}}"],
+              "path": ["challans"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "status", "value": "DRAFT" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Get Challan by ID (Snapshots Verified)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/challans/{{sampleChallanId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["challans", "{{sampleChallanId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Edit Draft Challan",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{salesToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    {\n      \"productId\": \"{{sampleProductId}}\",\n      \"quantity\": 20\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/challans/{{sampleChallanId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["challans", "{{sampleChallanId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Confirm Challan (Insufficient Stock Test - Expect 400)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{warehouseToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/challans/{{sampleChallanId}}/confirm",
+              "host": ["{{baseUrl}}"],
+              "path": ["challans", "{{sampleChallanId}}", "confirm"]
+            }
+          }
+        },
+        {
+          "name": "6. Confirm Challan (Sufficient Stock - Atomic Decrement)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{warehouseToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/challans/{{sampleChallanId}}/confirm",
+              "host": ["{{baseUrl}}"],
+              "path": ["challans", "{{sampleChallanId}}", "confirm"]
+            }
+          }
+        },
+        {
+          "name": "7. Cancel Challan (Stock Reversal with IN Log)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{adminToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/challans/{{sampleChallanId}}/cancel",
+              "host": ["{{baseUrl}}"],
+              "path": ["challans", "{{sampleChallanId}}", "cancel"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
