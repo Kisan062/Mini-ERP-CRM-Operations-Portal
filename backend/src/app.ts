@@ -8,6 +8,7 @@ import { AppError } from './errors/AppError';
 import authRoutes from './modules/auth/auth.routes';
 import productsRoutes from './modules/products/products.routes';
 import challansRoutes from './modules/challans/challans.routes';
+import customersRoutes from './modules/customers/customers.routes';
 
 const app = express();
 
@@ -38,10 +39,11 @@ app.get('/health', (req: Request, res: Response) => {
   });
 });
 
-// API Routes (Tier 1)
+// API Routes (Tier 1 & Tier 2)
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/challans', challansRoutes);
+app.use('/api/customers', customersRoutes);
 
 // Fallback for unmatched routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

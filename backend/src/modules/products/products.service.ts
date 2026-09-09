@@ -126,15 +126,15 @@ export class ProductsService {
     if (query.search) {
       const s = query.search.trim();
       where.OR = [
-        { name: { contains: s } },
-        { sku: { contains: s } },
-        { category: { contains: s } },
-        { location: { contains: s } },
+        { name: { contains: s, mode: 'insensitive' } },
+        { sku: { contains: s, mode: 'insensitive' } },
+        { category: { contains: s, mode: 'insensitive' } },
+        { location: { contains: s, mode: 'insensitive' } },
       ];
     }
 
     if (query.category) {
-      where.category = { equals: query.category };
+      where.category = { equals: query.category, mode: 'insensitive' };
     }
 
     if (query.lowStockOnly) {

@@ -407,9 +407,9 @@ export class ChallansService {
     if (query.search) {
       const s = query.search.trim();
       where.OR = [
-        { challanNumber: { contains: s } },
-        { customer: { name: { contains: s } } },
-        { customer: { businessName: { contains: s } } },
+        { challanNumber: { contains: s, mode: 'insensitive' } },
+        { customer: { name: { contains: s, mode: 'insensitive' } } },
+        { customer: { businessName: { contains: s, mode: 'insensitive' } } },
       ];
     }
 
