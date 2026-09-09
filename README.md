@@ -362,7 +362,4 @@ postman/ERM_Operations_Portal.postman_collection.json
 3. **Product Stock Invariance**: As a core rule of wholesale inventory control, direct stock overwrites are disabled. Stock can only be shifted via audited adjustment logs (`IN`/`OUT`) or through delivery challan confirmations/cancellations.
 4. **Soft vs. Hard Deletes**: Core entities (Products, Customers, Challans) are retained permanently for auditable accounting history.
 
----
 
-## License
-MIT License. Built for technical evaluation.

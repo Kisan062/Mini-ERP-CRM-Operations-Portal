@@ -165,9 +165,17 @@ export const ProductsPage: React.FC = () => {
   const handleAdjustSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedProduct) return;
+    const qty = parseInt(adjustForm.quantity, 10);
+    if (adjustForm.movementType === 'OUT' && qty > selectedProduct.currentStock) {
+      showToast(
+        `Cannot deduct ${qty} units. Available stock is only ${selectedProduct.currentStock} units.`,
+        'error'
+      );
+      return;
+    }
     try {
       await api.post(`/products/${selectedProduct.id}/stock`, {
-        quantity: parseInt(adjustForm.quantity, 10),
+        quantity: qty,
         movementType: adjustForm.movementType,
         reason: adjustForm.reason,
       });
@@ -605,12 +613,24 @@ export const ProductsPage: React.FC = () => {
               <input
                 type="number"
                 min="1"
+                max={
+                  adjustForm.movementType === 'OUT'
+                    ? selectedProduct?.currentStock
+                    : undefined
+                }
                 className="input"
                 style={{ width: '100%' }}
                 required
                 value={adjustForm.quantity}
                 onChange={(e) => setAdjustForm({ ...adjustForm, quantity: e.target.value })}
               />
+              {adjustForm.movementType === 'OUT' &&
+                selectedProduct &&
+                (parseInt(adjustForm.quantity, 10) || 0) > selectedProduct.currentStock && (
+                  <span style={{ color: '#dc2626', fontSize: '11px', marginTop: '4px', display: 'block' }}>
+                    ⚠️ Exceeds available stock ({selectedProduct.currentStock} units)
+                  </span>
+                )}
             </div>
           </div>
 
@@ -629,7 +649,18 @@ export const ProductsPage: React.FC = () => {
 
           {/* New Stock preview */}
           {selectedProduct && (
-            <div style={{ fontSize: '13px', color: '#1e40af', marginBottom: '14px', fontWeight: 500 }}>
+            <div
+              style={{
+                fontSize: '13px',
+                color:
+                  adjustForm.movementType === 'OUT' &&
+                  (parseInt(adjustForm.quantity, 10) || 0) > selectedProduct.currentStock
+                    ? '#dc2626'
+                    : '#1e40af',
+                marginBottom: '14px',
+                fontWeight: 500,
+              }}
+            >
               Resulting Stock: {selectedProduct.currentStock}{' '}
               {adjustForm.movementType === 'IN' ? '+' : '-'}{' '}
               {parseInt(adjustForm.quantity, 10) || 0} ={' '}
@@ -650,7 +681,15 @@ export const ProductsPage: React.FC = () => {
             >
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={
+                adjustForm.movementType === 'OUT' &&
+                !!selectedProduct &&
+                (parseInt(adjustForm.quantity, 10) || 0) > selectedProduct.currentStock
+              }
+            >
               Confirm Stock Movement
             </button>
           </div>
