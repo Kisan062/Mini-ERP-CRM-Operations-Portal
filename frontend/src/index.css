@@ -1,16 +1,21 @@
-/* Mini ERP + CRM Operations Portal - Clean Admin Stylesheet */
+/* ============================================================
+   Mini ERP + CRM Operations Portal — Professional Admin UI
+   ============================================================ */
+
 :root {
-  --primary: #1e40af;
+  /* Core palette */
+  --primary: #2563eb;
   --primary-hover: #1d4ed8;
   --primary-light: #eff6ff;
-  --bg-main: #f8fafc;
+  --bg-main: #f1f5f9;
   --bg-surface: #ffffff;
   --text-main: #0f172a;
+  --text-secondary: #334155;
   --text-muted: #64748b;
   --border-color: #e2e8f0;
   --border-focus: #3b82f6;
 
-  /* Status Colors */
+  /* Status palette */
   --success: #16a34a;
   --success-bg: #dcfce7;
   --warning: #d97706;
@@ -20,27 +25,35 @@
   --info: #0284c7;
   --info-bg: #e0f2fe;
 
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --radius: 6px;
+  /* Elevation */
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.04);
+  --shadow-md: 0 2px 8px rgb(0 0 0 / 0.06);
+  --shadow-lg: 0 8px 24px rgb(0 0 0 / 0.1);
+
+  --radius: 8px;
+  --radius-sm: 6px;
 }
 
-* {
+/* ---- Reset ---- */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-main);
   color: var(--text-main);
-  line-height: 1.5;
+  line-height: 1.6;
   font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Layout */
+/* ============================================================
+   Layout
+   ============================================================ */
 .app-container {
   min-height: 100vh;
   display: flex;
@@ -49,13 +62,15 @@ body {
 
 .main-content {
   flex: 1;
-  max-width: 1300px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 28px 24px;
 }
 
-/* Navbar */
+/* ============================================================
+   Navbar
+   ============================================================ */
 .navbar {
   background-color: #0f172a;
   color: #f8fafc;
@@ -66,9 +81,9 @@ body {
 }
 
 .navbar-inner {
-  max-width: 1300px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
   height: 56px;
   display: flex;
   align-items: center;
@@ -86,19 +101,20 @@ body {
 }
 
 .brand-badge {
-  background: #3b82f6;
+  background: var(--primary);
   color: #ffffff;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: 4px;
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
 }
 
 .nav-link {
@@ -108,25 +124,26 @@ body {
   padding: 8px 14px;
   font-size: 13px;
   font-weight: 500;
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: color 0.2s, background-color 0.2s;
+  font-family: inherit;
 }
 
 .nav-link:hover {
-  color: #f8fafc;
-  background-color: #1e293b;
+  color: #e2e8f0;
+  background-color: rgba(255, 255, 255, 0.06);
 }
 
 .nav-link.active {
   color: #ffffff;
-  background-color: #2563eb;
+  background-color: var(--primary);
 }
 
 .nav-user {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .user-info {
@@ -144,16 +161,92 @@ body {
 
 .user-role-badge {
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 1px 6px;
   border-radius: 4px;
   text-transform: uppercase;
-  background-color: #334155;
+  background-color: rgba(255, 255, 255, 0.08);
   color: #93c5fd;
   margin-top: 2px;
+  letter-spacing: 0.04em;
 }
 
-/* Cards & Panels */
+/* ============================================================
+   Page Header (used in Users page, etc.)
+   ============================================================ */
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.page-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-weight: 400;
+}
+
+/* ============================================================
+   KPI Stat Cards
+   ============================================================ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.kpi-card {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.kpi-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: #cbd5e1;
+}
+
+.kpi-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.1;
+}
+
+.kpi-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ============================================================
+   Cards & Panels
+   ============================================================ */
 .card {
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
@@ -163,7 +256,7 @@ body {
 }
 
 .card-header {
-  padding: 16px 20px;
+  padding: 18px 22px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
@@ -174,21 +267,24 @@ body {
 
 .card-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-main);
+  letter-spacing: -0.01em;
 }
 
 .card-subtitle {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text-muted);
   margin-top: 2px;
 }
 
 .card-body {
-  padding: 20px;
+  padding: 22px;
 }
 
-/* Tables */
+/* ============================================================
+   Tables
+   ============================================================ */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -207,22 +303,25 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   font-size: 11px;
-  letter-spacing: 0.04em;
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--border-color);
-  border-top: 1px solid var(--border-color);
+  letter-spacing: 0.05em;
+  padding: 10px 16px;
+  border-bottom: 2px solid var(--border-color);
   white-space: nowrap;
 }
 
 .admin-table td {
-  padding: 12px 14px;
-  border-bottom: 1px solid var(--border-color);
+  padding: 12px 16px;
+  border-bottom: 1px solid #f1f5f9;
   color: var(--text-main);
   vertical-align: middle;
 }
 
+.admin-table tbody tr {
+  transition: background-color 0.15s;
+}
+
 .admin-table tbody tr:hover {
-  background-color: #f1f5f9;
+  background-color: #f8fafc;
 }
 
 /* Low stock alert highlight */
@@ -246,15 +345,19 @@ body {
   border-radius: 4px;
 }
 
-/* Badges */
+/* ============================================================
+   Badges
+   ============================================================ */
 .badge {
-  display: inline-block;
-  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
   font-size: 11px;
   font-weight: 600;
-  border-radius: 4px;
+  border-radius: 20px;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
 }
 
 .badge-draft {
@@ -307,16 +410,51 @@ body {
   color: #0891b2;
 }
 
-/* Buttons */
+/* Role badges for Users page */
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.role-badge-admin {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
+.role-badge-sales {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.role-badge-warehouse {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.role-badge-accounts {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 7px 14px;
+  padding: 8px 16px;
   font-size: 13px;
   font-weight: 500;
-  border-radius: var(--radius);
+  font-family: inherit;
+  border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -330,11 +468,12 @@ body {
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
+  box-shadow: 0 1px 3px rgb(37 99 235 / 0.3);
 }
 
 .btn-secondary {
   background-color: #ffffff;
-  color: #334155;
+  color: var(--text-secondary);
   border-color: var(--border-color);
 }
 
@@ -372,16 +511,18 @@ body {
 }
 
 .btn-sm {
-  padding: 4px 8px;
+  padding: 5px 10px;
   font-size: 12px;
 }
 
 .btn:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Forms & Filters */
+/* ============================================================
+   Forms & Filters
+   ============================================================ */
 .toolbar {
   display: flex;
   align-items: center;
@@ -399,19 +540,20 @@ body {
 }
 
 .input, .select, .textarea {
-  padding: 7px 12px;
+  padding: 8px 12px;
   font-size: 13px;
+  font-family: inherit;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius);
+  border-radius: var(--radius-sm);
   background-color: #ffffff;
   color: var(--text-main);
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .input:focus, .select:focus, .textarea:focus {
   border-color: var(--border-focus);
-  box-shadow: 0 0 0 2px rgb(59 130 246 / 0.15);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
 }
 
 .search-input {
@@ -419,52 +561,72 @@ body {
 }
 
 .form-group {
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 
 .form-label {
   display: block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  color: #334155;
-  margin-bottom: 4px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
 }
 
 .form-hint {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
-  margin-top: 3px;
+  margin-top: 4px;
 }
 
 .form-grid-2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
 }
 
-/* Modal Dialog */
+/* ============================================================
+   Modal Dialog
+   ============================================================ */
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(15, 23, 42, 0.6);
+  background-color: rgba(15, 23, 42, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 50;
   padding: 16px;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.15s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .modal-dialog {
   background-color: #ffffff;
-  border-radius: var(--radius);
+  border-radius: 10px;
   box-shadow: var(--shadow-lg);
   width: 100%;
-  max-width: 600px;
+  max-width: 560px;
   max-height: 90vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  animation: modalSlideUp 0.2s ease-out;
+}
+
+@keyframes modalSlideUp {
+  from {
+    transform: translateY(12px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .modal-dialog.modal-lg {
@@ -472,7 +634,7 @@ body {
 }
 
 .modal-header {
-  padding: 16px 20px;
+  padding: 18px 22px;
   border-bottom: 1px solid var(--border-color);
   display: flex;
   align-items: center;
@@ -481,7 +643,7 @@ body {
 
 .modal-title {
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-main);
 }
 
@@ -493,6 +655,7 @@ body {
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 4px;
+  transition: background-color 0.15s, color 0.15s;
 }
 
 .modal-close:hover {
@@ -501,13 +664,13 @@ body {
 }
 
 .modal-body {
-  padding: 20px;
+  padding: 22px;
   overflow-y: auto;
   flex: 1;
 }
 
 .modal-footer {
-  padding: 12px 20px;
+  padding: 14px 22px;
   border-top: 1px solid var(--border-color);
   background-color: #f8fafc;
   display: flex;
@@ -516,7 +679,9 @@ body {
   gap: 8px;
 }
 
-/* Toast Notifications */
+/* ============================================================
+   Toast Notifications
+   ============================================================ */
 .toast-container {
   position: fixed;
   bottom: 24px;
@@ -525,7 +690,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  max-width: 450px;
+  max-width: 420px;
   width: 100%;
 }
 
@@ -533,17 +698,18 @@ body {
   padding: 12px 16px;
   border-radius: var(--radius);
   font-size: 13px;
+  font-weight: 500;
   box-shadow: var(--shadow-lg);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  animation: slideIn 0.2s ease-out;
+  animation: slideIn 0.25s ease-out;
 }
 
 @keyframes slideIn {
   from {
-    transform: translateY(20px);
+    transform: translateY(16px);
     opacity: 0;
   }
   to {
@@ -555,19 +721,19 @@ body {
 .toast-success {
   background-color: #065f46;
   color: #ecfdf5;
-  border-left: 4px solid #34d399;
+  border-left: 3px solid #34d399;
 }
 
 .toast-error {
   background-color: #991b1b;
   color: #fef2f2;
-  border-left: 4px solid #f87171;
+  border-left: 3px solid #f87171;
 }
 
 .toast-info {
   background-color: #1e40af;
   color: #eff6ff;
-  border-left: 4px solid #60a5fa;
+  border-left: 3px solid #60a5fa;
 }
 
 .toast-close {
@@ -576,14 +742,17 @@ body {
   color: inherit;
   cursor: pointer;
   font-size: 14px;
-  opacity: 0.8;
+  opacity: 0.7;
+  transition: opacity 0.15s;
 }
 
 .toast-close:hover {
   opacity: 1;
 }
 
-/* Pagination */
+/* ============================================================
+   Pagination
+   ============================================================ */
 .pagination {
   display: flex;
   align-items: center;
@@ -601,40 +770,43 @@ body {
   gap: 6px;
 }
 
-/* Login Page Specifics */
+/* ============================================================
+   Login Page
+   ============================================================ */
 .login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #0f172a;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
   padding: 20px;
 }
 
 .login-box {
   background-color: #ffffff;
-  border-radius: 8px;
-  box-shadow: var(--shadow-lg);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgb(0 0 0 / 0.2);
   width: 100%;
-  max-width: 420px;
-  padding: 32px;
+  max-width: 400px;
+  padding: 36px 32px;
 }
 
 .login-header {
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
 }
 
 .login-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   color: #0f172a;
+  letter-spacing: -0.02em;
 }
 
 .login-subtitle {
   font-size: 13px;
   color: #64748b;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .role-switcher {
@@ -648,8 +820,9 @@ body {
   font-weight: 700;
   text-transform: uppercase;
   color: #64748b;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   text-align: center;
+  letter-spacing: 0.05em;
 }
 
 .role-buttons {
@@ -659,24 +832,45 @@ body {
 }
 
 .role-quick-btn {
-  padding: 6px 10px;
-  font-size: 11px;
+  padding: 8px 10px;
+  font-size: 12px;
   font-weight: 600;
-  border-radius: 4px;
-  border: 1px solid #cbd5e1;
-  background-color: #f8fafc;
-  color: #334155;
+  font-family: inherit;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background-color: #ffffff;
+  color: var(--text-secondary);
   cursor: pointer;
   text-align: center;
   transition: all 0.15s ease;
 }
 
 .role-quick-btn:hover {
-  background-color: #e2e8f0;
+  background-color: #f1f5f9;
   border-color: #94a3b8;
+  transform: translateY(-1px);
 }
 
-/* Empty States */
+/* ============================================================
+   User Avatar
+   ============================================================ */
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  color: #334155;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   Empty States
+   ============================================================ */
 .empty-state {
   text-align: center;
   padding: 48px 20px;
@@ -690,7 +884,9 @@ body {
   margin-bottom: 4px;
 }
 
-/* Print Styles for Challan Invoice / Export PDF */
+/* ============================================================
+   Print Styles
+   ============================================================ */
 @media print {
   body {
     background-color: #ffffff !important;

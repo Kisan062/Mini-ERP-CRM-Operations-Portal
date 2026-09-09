@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Screen Recording & Showcase Guide - Mini ERP + CRM Operations Portal</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 10mm 11mm 10mm 11mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-size: 8.8pt;
+      line-height: 1.35;
+      color: #1e293b;
+      background-color: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .sheet-page {
+      min-height: 275mm;
+      max-height: 277mm;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .page-break {
+      page-break-before: always;
+      break-before: page;
+    }
+
+    /* Header */
+    .doc-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 16px 20px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .doc-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.25);
+      border: 1px solid rgba(96, 165, 250, 0.45);
+      color: #93c5fd;
+      font-size: 7pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      margin-bottom: 6px;
+    }
+
+    .doc-title {
+      font-size: 17pt;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+
+    .doc-subtitle {
+      font-size: 9pt;
+      color: #cbd5e1;
+      font-weight: 400;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 7.8pt;
+      color: #94a3b8;
+    }
+
+    .meta-item strong {
+      color: #e2e8f0;
+      font-weight: 600;
+    }
+
+    /* Section Titles */
+    .section-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0f172a;
+      border-bottom: 1.5px solid #e2e8f0;
+      padding-bottom: 4px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-tag {
+      font-size: 7pt;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+
+    /* Pro tip */
+    .pro-tip {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 6px;
+      padding: 6px 10px;
+      margin-bottom: 8px;
+      font-size: 8pt;
+      color: #1e40af;
+      line-height: 1.35;
+    }
+
+    .pro-tip strong { color: #1d4ed8; }
+
+    /* Checklist */
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 5px 8px;
+      font-size: 8pt;
+    }
+
+    .check-box {
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid #64748b;
+      border-radius: 3px;
+      flex-shrink: 0;
+      background: #ffffff;
+    }
+
+    /* Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin-bottom: 8px;
+      background: #ffffff;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
+
+    table.data-table th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+      text-align: left;
+      padding: 5px 8px;
+      border-bottom: 1px solid #cbd5e1;
+      font-size: 7.5pt;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    table.data-table td {
+      padding: 4.5px 8px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #334155;
+      vertical-align: middle;
+    }
+
+    table.data-table tr:last-child td { border-bottom: none; }
+
+    /* Step Card - REDESIGNED */
+    .step-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      page-break-inside: avoid;
+    }
+
+    .step-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .step-number {
+      width: 22px;
+      height: 22px;
+      background: #2563eb;
+      color: #ffffff;
+      font-size: 9pt;
+      font-weight: 700;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-name {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      flex-grow: 1;
+    }
+
+    .step-timing {
+      font-size: 7.2pt;
+      font-weight: 600;
+      color: #475569;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 2px 7px;
+      border-radius: 9999px;
+      white-space: nowrap;
+    }
+
+    /* Sequential Action Row */
+    .action-sequence {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+
+    .action-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 3px 0;
+      border-bottom: 1px dashed #e2e8f0;
+      font-size: 8.2pt;
+      color: #334155;
+      line-height: 1.35;
+    }
+
+    .action-row:last-child {
+      border-bottom: none;
+    }
+
+    .action-num {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #94a3b8;
+      min-width: 22px;
+      text-align: right;
+      padding-top: 1px;
+      flex-shrink: 0;
+    }
+
+    /* Action type tags */
+    .tag {
+      display: inline-block;
+      font-size: 6.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 1px 5px;
+      border-radius: 3px;
+      margin-right: 4px;
+      flex-shrink: 0;
+      vertical-align: middle;
+      position: relative;
+      top: -0.5px;
+    }
+
+    .tag-click {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .tag-type {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+    }
+
+    .tag-look {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+    }
+
+    .tag-wait {
+      background: #f3e8ff;
+      color: #6b21a8;
+      border: 1px solid #e9d5ff;
+    }
+
+    .tag-say {
+      background: #dcfce7;
+      color: #166534;
+      border: 1px solid #bbf7d0;
+    }
+
+    .tag-navigate {
+      background: #ffedd5;
+      color: #9a3412;
+      border: 1px solid #fed7aa;
+    }
+
+    /* Speech block */
+    .speech-block {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 3px solid #10b981;
+      border-radius: 5px;
+      padding: 6px 8px;
+    }
+
+    .speech-label {
+      font-size: 6.8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #047857;
+      margin-bottom: 3px;
+    }
+
+    .speech-text {
+      font-size: 7.8pt;
+      color: #166534;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .highlight-badge {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 7.2pt;
+      background: #e2e8f0;
+      border: 1px solid #cbd5e1;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #0f172a;
+      font-weight: 600;
+    }
+
+    .btn-name {
+      display: inline;
+      font-weight: 700;
+      color: #1e40af;
+      background: #eff6ff;
+      padding: 0 3px;
+      border-radius: 2px;
+      border: 1px solid #bfdbfe;
+      font-size: 7.8pt;
+    }
+
+    .field-val {
+      display: inline;
+      font-family: monospace;
+      font-size: 7.5pt;
+      color: #92400e;
+      background: #fffbeb;
+      padding: 0 3px;
+      border-radius: 2px;
+      border: 1px solid #fde68a;
+    }
+
+    .tech-pill-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin: 6px 0;
+    }
+
+    .tech-pill {
+      font-size: 7.2pt;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #334155;
+      border: 1px solid #e2e8f0;
+    }
+
+    .footer-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.5pt;
+      color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
+      padding-top: 6px;
+      margin-top: 8px;
+    }
+
+    ul.clean-list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    ul.clean-list li {
+      position: relative;
+      padding-left: 12px;
+      margin-bottom: 3px;
+      font-size: 8pt;
+      color: #334155;
+      line-height: 1.3;
+    }
+
+    ul.clean-list li::before {
+      content: "•";
+      position: absolute;
+      left: 2px;
+      top: -1px;
+      color: #2563eb;
+      font-weight: bold;
+      font-size: 10pt;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    /* Tag legend */
+    .tag-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 5px;
+      padding: 5px 10px;
+      margin-bottom: 8px;
+      font-size: 7.5pt;
+      color: #64748b;
+    }
+
+    .tag-legend-item {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= PAGE 1 ================= -->
+  <div class="sheet-page">
+    <div>
+      <div class="doc-header">
+        <div class="doc-badge">Official Video Presentation Script</div>
+        <div class="doc-title">Mini ERP + CRM Operations Portal</div>
+        <div class="doc-subtitle">Step-by-Step Screen Recording Guide with Exact Click Sequences & Voiceover Scripts</div>
+        <div class="meta-row">
+          <div class="meta-item"><strong>Target Length:</strong> 5 - 6.5 Minutes</div>
+          <div class="meta-item"><strong>Platform URL:</strong> http://localhost:5173</div>
+          <div class="meta-item"><strong>Stack:</strong> React 19 · Node.js · Express · TypeScript · Prisma · PostgreSQL</div>
+        </div>
+      </div>
+
+      <div class="pro-tip">
+        <strong>How to Read This Guide:</strong> Each step is broken into numbered sub-actions (1.1, 1.2, 1.3...). Follow them in exact sequence. Color-coded tags tell you what kind of action it is:
+        <span class="tag tag-click">CLICK</span> = mouse click,
+        <span class="tag tag-type">TYPE</span> = keyboard input,
+        <span class="tag tag-look">OBSERVE</span> = point your cursor at something,
+        <span class="tag tag-navigate">NAV</span> = switch tab/page,
+        <span class="tag tag-wait">WAIT</span> = pause briefly,
+        <span class="tag tag-say">SAY</span> = speak this to camera.
+      </div>
+
+      <div class="section-title">
+        <span>Pre-Recording Checklist</span>
+        <span class="section-tag">Do This Before Pressing Record</span>
+      </div>
+
+      <div class="checklist-grid">
+        <div class="check-item"><div class="check-box"></div><span><strong>Screen:</strong> 1080p (1920x1080), browser at 100% zoom</span></div>
+        <div class="check-item"><div class="check-box"></div><span><strong>Server:</strong> Run <code>npm run dev</code> in the project root folder</span></div>
+        <div class="check-item"><div class="check-box"></div><span><strong>Browser:</strong> Close bookmarks bar and all other tabs</span></div>
+        <div class="check-item"><div class="check-box"></div><span><strong>Audio:</strong> Test microphone - clear voice, no echo</span></div>
+        <div class="check-item"><div class="check-box"></div><span><strong>Start At:</strong> Open <code>http://localhost:5173/</code> and make sure you're logged out</span></div>
+        <div class="check-item"><div class="check-box"></div><span><strong>Recorder:</strong> OBS Studio or Windows (Win+Shift+R) at 1080p 60fps</span></div>
+      </div>
+
+      <div class="section-title">
+        <span>Demo Accounts Reference</span>
+        <span class="section-tag">Pre-Seeded Credentials</span>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 80px;">Role</th>
+            <th style="width: 170px;">Email</th>
+            <th style="width: 90px;">Password</th>
+            <th>What This Role Can Do</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ADMIN</strong></td>
+            <td><code>admin@operations.com</code></td>
+            <td><code>Admin@123</code></td>
+            <td>Everything: Products, Challans, CRM, <strong>User Management</strong></td>
+          </tr>
+          <tr>
+            <td><strong>SALES</strong></td>
+            <td><code>sales@operations.com</code></td>
+            <td><code>Sales@123</code></td>
+            <td>CRM Customers + Draft Challans. <em>No stock adjustment, no Users tab</em></td>
+          </tr>
+          <tr>
+            <td><strong>WAREHOUSE</strong></td>
+            <td><code>warehouse@operations.com</code></td>
+            <td><code>Warehouse@123</code></td>
+            <td>Stock IN/OUT + Confirm/Cancel Challans. <em>No CRM, no Users tab</em></td>
+          </tr>
+          <tr>
+            <td><strong>ACCOUNTS</strong></td>
+            <td><code>accounts@operations.com</code></td>
+            <td><code>Accounts@123</code></td>
+            <td>Read-only auditor across all modules</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">
+        <span>Recording Timeline Overview</span>
+        <span class="section-tag">Total: ~6 Minutes</span>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 80px;">Time</th>
+            <th style="width: 170px;">Section</th>
+            <th>What You Will Demonstrate</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>00:00 - 00:35</td><td>Step 1: Login</td><td>Introduce project, use 1-click Admin login, enter dashboard</td></tr>
+          <tr><td>00:35 - 01:45</td><td>Step 2: Products</td><td>Browse catalog, low-stock filter, add product, stock adjustment, audit log</td></tr>
+          <tr><td>01:45 - 03:00</td><td>Step 3: Challans</td><td>Create draft challan, add items with price snapshot, confirm dispatch</td></tr>
+          <tr><td>03:00 - 04:00</td><td>Step 4: Customers</td><td>Add customer, schedule follow-up, show overdue alerts</td></tr>
+          <tr><td>04:00 - 05:00</td><td>Step 5: Users</td><td>KPI cards, add user, edit role, delete user</td></tr>
+          <tr><td>05:00 - 05:50</td><td>Step 6: RBAC Proof</td><td>Logout, login as Warehouse & Sales, show restricted access</td></tr>
+          <tr><td>05:50 - 06:10</td><td>Step 7: Wrap-up</td><td>Summarize architecture, thank evaluators</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer-bar">
+      <span>Mini ERP + CRM Operations Portal - Video Showcase Script</span>
+      <span>Page 1 of 4</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 2 ================= -->
+  <div class="page-break"></div>
+  <div class="sheet-page">
+    <div>
+      <div class="section-title" style="margin-top: 0;">
+        <span>Step-by-Step Recording Actions (Part 1 of 2)</span>
+        <span class="section-tag">Follow Each Sub-Step in Order</span>
+      </div>
+
+      <!-- ===== STEP 1: LOGIN ===== -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">1</div>
+          <div class="step-name">Project Introduction & Login</div>
+          <div class="step-timing">00:00 - 00:35</div>
+        </div>
+
+        <div class="action-sequence">
+          <div class="action-row">
+            <div class="action-num">1.1</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Hello everyone! Today I'm showcasing my Mini ERP and CRM Operations Portal, built for wholesale and distribution enterprises. The tech stack uses Node.js, Express, TypeScript, Prisma ORM with PostgreSQL on Neon Cloud, and React 19 with Vite."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">1.2</div>
+            <div><span class="tag tag-look">OBSERVE</span> You should be on the <strong>Login screen</strong>. Move your cursor slowly over the page title <em>"Operations Portal - Mini ERP & CRM"</em> to highlight the clean, professional design.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">1.3</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point your cursor at the <strong>Quick Demo Login</strong> buttons at the bottom of the form (Admin, Sales, Warehouse, Accounts).</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">1.4</div>
+            <div><span class="tag tag-say">SAY</span> <em>"The login page features 1-click role demo buttons that prefill credentials instantly. I'll click Admin to sign in with full superuser access."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">1.5</div>
+            <div><span class="tag tag-click">CLICK</span> the blue <span class="btn-name">Admin</span> quick-login button. The email and password fields auto-fill.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">1.6</div>
+            <div><span class="tag tag-wait">WAIT</span> 1 second so the viewer can see the prefilled credentials.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">1.7</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Sign In to Portal</span> button. The dashboard loads.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 2: PRODUCTS ===== -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">2</div>
+          <div class="step-name">Products Catalog, Stock Adjustment & Audit Log</div>
+          <div class="step-timing">00:35 - 01:45</div>
+        </div>
+
+        <div class="action-sequence">
+          <div class="action-row">
+            <div class="action-num">2.1</div>
+            <div><span class="tag tag-navigate">NAV</span> Click the <span class="btn-name">Products</span> tab in the top navigation bar.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.2</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Here's the Products module where warehouse operators can view real-time stock levels across the entire catalog."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.3</div>
+            <div><span class="tag tag-look">OBSERVE</span> Slowly move your cursor across the table headers: <strong>SKU, Name, Category, Price, Stock, Reorder Level</strong>. Point at any red <span class="highlight-badge">Low Stock</span> badge.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.4</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Notice the red Low Stock badges. These automatically appear when a product's current stock falls below its reorder threshold."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.5</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Show Low Stock Only</span> checkbox to filter. Pause 2 seconds. Then <span class="tag tag-click">CLICK</span> it again to uncheck.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.6</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">+ Add Product</span> button. A modal opens.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.7</div>
+            <div><span class="tag tag-wait">WAIT</span> 1 second for the viewer to see the form layout.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.8</div>
+            <div><span class="tag tag-type">TYPE</span> into the form fields one by one:<br>
+              &nbsp;&nbsp;&nbsp;Name: <span class="field-val">Heavy Duty Pallet Wrap</span><br>
+              &nbsp;&nbsp;&nbsp;SKU: <span class="field-val">PKG-PLT-01</span><br>
+              &nbsp;&nbsp;&nbsp;Category: <span class="field-val">Packaging</span><br>
+              &nbsp;&nbsp;&nbsp;Price: <span class="field-val">450</span><br>
+              &nbsp;&nbsp;&nbsp;Current Stock: <span class="field-val">50</span><br>
+              &nbsp;&nbsp;&nbsp;Reorder Level: <span class="field-val">15</span></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.9</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Save Product</span> button. The modal closes and the new product appears in the table.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.10</div>
+            <div><span class="tag tag-say">SAY</span> <em>"An important business guarantee: inventory cannot be directly edited. Every stock change must go through an audited adjustment with a reason code."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.11</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Adjust Stock</span> button on any product row. A modal opens.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.12</div>
+            <div><span class="tag tag-click">CLICK</span> to select <span class="btn-name">Stock In</span> as the adjustment type.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.13</div>
+            <div><span class="tag tag-type">TYPE</span> Quantity: <span class="field-val">25</span> and Reason: <span class="field-val">Received supplier shipment</span></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.14</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Save Adjustment</span>. The stock count in the table updates immediately (+25).</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.15</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">View Movement Logs</span> button on that product row.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.16</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the audit log entries: timestamp, user who made the change, quantity delta (+25), and balance after.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">2.17</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Every stock movement is permanently recorded in the StockLog ledger with the authenticated user ID, the delta quantity, and the running balance. These logs are immutable."</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 3: CHALLANS ===== -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">3</div>
+          <div class="step-name">Delivery Challans & Concurrency-Safe Dispatch</div>
+          <div class="step-timing">01:45 - 03:00</div>
+        </div>
+
+        <div class="action-sequence">
+          <div class="action-row">
+            <div class="action-num">3.1</div>
+            <div><span class="tag tag-navigate">NAV</span> Click the <span class="btn-name">Challans</span> tab in the top navigation bar.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.2</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Now let's look at the Delivery Challan engine, which handles wholesale dispatch orders. Each challan moves through strict lifecycle states."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.3</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point your cursor at the status badges in the table: <span class="highlight-badge">DRAFT</span> (yellow), <span class="highlight-badge">CONFIRMED</span> (green), <span class="highlight-badge">CANCELLED</span> (red).</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.4</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">+ Create Challan</span> button. A modal opens.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.5</div>
+            <div><span class="tag tag-wait">WAIT</span> 1 second for the viewer to see the form.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.6</div>
+            <div><span class="tag tag-click">CLICK</span> the Customer dropdown and select any customer (e.g. <span class="field-val">Apex Retailers</span>).</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.7</div>
+            <div><span class="tag tag-type">TYPE</span> a delivery address: <span class="field-val">123 Industrial Area, Mumbai</span></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.8</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">+ Add Item</span> button to add a line item.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.9</div>
+            <div><span class="tag tag-click">CLICK</span> to select a product from the dropdown. <span class="tag tag-type">TYPE</span> quantity: <span class="field-val">5</span></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.10</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Notice that the unit price automatically snapshots from the catalog. If product prices change later, this challan's historical record remains permanently accurate."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.11</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Create Draft</span>. The modal closes and the new challan appears with <span class="highlight-badge">DRAFT</span> status.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.12</div>
+            <div><span class="tag tag-click">CLICK</span> the newly created challan row to open its <strong>detail view/drawer</strong>.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.13</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the line items showing frozen product name, unit price snapshot, quantity, and line total.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.14</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Confirm & Dispatch</span> button. The status badge changes to green <span class="highlight-badge">CONFIRMED</span>.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.15</div>
+            <div><span class="tag tag-say">SAY</span> <em>"When confirming, our backend uses PostgreSQL row-level locks in an atomic Prisma transaction. It validates stock across ALL items before deducting, preventing race conditions during simultaneous dispatches."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">3.16</div>
+            <div><span class="tag tag-navigate">NAV</span> <strong>(Bonus!)</strong> Switch to the <span class="btn-name">Products</span> tab and show that the product stock decreased by 5 units automatically.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Mini ERP + CRM Operations Portal - Video Showcase Script</span>
+      <span>Page 2 of 4</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 3 ================= -->
+  <div class="page-break"></div>
+  <div class="sheet-page">
+    <div>
+      <div class="section-title" style="margin-top: 0;">
+        <span>Step-by-Step Recording Actions (Part 2 of 2)</span>
+        <span class="section-tag">CRM, Users & Security Verification</span>
+      </div>
+
+      <!-- ===== STEP 4: CUSTOMERS ===== -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">4</div>
+          <div class="step-name">Customer CRM & Follow-Up Tracking</div>
+          <div class="step-timing">03:00 - 04:00</div>
+        </div>
+
+        <div class="action-sequence">
+          <div class="action-row">
+            <div class="action-num">4.1</div>
+            <div><span class="tag tag-navigate">NAV</span> Click the <span class="btn-name">Customers</span> tab in the top navigation bar.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.2</div>
+            <div><span class="tag tag-say">SAY</span> <em>"The Customers CRM module connects our sales pipeline to operations. Accounts are categorized as Wholesale, Distributor, or Retail."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.3</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the customer type badges in the table: <span class="highlight-badge">WHOLESALE</span>, <span class="highlight-badge">DISTRIBUTOR</span>, <span class="highlight-badge">RETAIL</span>.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.4</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the <strong>Next Follow-up</strong> column. Hover over any amber/red warning badge on overdue entries.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.5</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Follow-up dates with warning badges ensure sales reps never miss a reorder opportunity."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.6</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">+ Add Customer</span> button. A modal opens.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.7</div>
+            <div><span class="tag tag-wait">WAIT</span> 1 second, then fill in the form:</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.8</div>
+            <div><span class="tag tag-type">TYPE</span> into the form fields:<br>
+              &nbsp;&nbsp;&nbsp;Name: <span class="field-val">Metro Superstores Ltd</span><br>
+              &nbsp;&nbsp;&nbsp;Type: <span class="field-val">Wholesale</span> (select from dropdown)<br>
+              &nbsp;&nbsp;&nbsp;Status: <span class="field-val">Active</span><br>
+              &nbsp;&nbsp;&nbsp;Contact Person: <span class="field-val">Rajesh Kumar</span><br>
+              &nbsp;&nbsp;&nbsp;Phone: <span class="field-val">+91 98765 43210</span></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.9</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Save Customer</span>. The new customer appears in the table.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.10</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Schedule Follow-up</span> on any customer row. Pick a date next week.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">4.11</div>
+            <div><span class="tag tag-type">TYPE</span> a follow-up note: <span class="field-val">Quarterly reorder cycle review</span>. Then save.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 5: USERS ===== -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">5</div>
+          <div class="step-name">User Management & Administration (Admin Only)</div>
+          <div class="step-timing">04:00 - 05:00</div>
+        </div>
+
+        <div class="action-sequence">
+          <div class="action-row">
+            <div class="action-num">5.1</div>
+            <div><span class="tag tag-navigate">NAV</span> Click the <span class="btn-name">Users</span> tab in the navigation bar (this tab only appears for Admin role).</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.2</div>
+            <div><span class="tag tag-say">SAY</span> <em>"This is the User Management module, restricted exclusively to Administrators."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.3</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the 4 <strong>KPI Metric Cards</strong> at the top: Total Users, Administrators, Sales Reps, Warehouse Crew. Move cursor across each card.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.4</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">+ Add New User</span> button. A modal opens.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.5</div>
+            <div><span class="tag tag-type">TYPE</span> into the form:<br>
+              &nbsp;&nbsp;&nbsp;Name: <span class="field-val">Vikram Sharma</span><br>
+              &nbsp;&nbsp;&nbsp;Email: <span class="field-val">vikram@operations.com</span><br>
+              &nbsp;&nbsp;&nbsp;Role: <span class="field-val">Warehouse</span> (select from dropdown)<br>
+              &nbsp;&nbsp;&nbsp;Password: <span class="field-val">Warehouse@123</span></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.6</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Create User</span>. The new user appears in the table with an orange <span class="highlight-badge">WAREHOUSE</span> badge.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.7</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the KPI cards - the counts have updated in real-time.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.8</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Edit</span> button on Vikram's row. Change role to <span class="field-val">Sales</span>. Click <span class="btn-name">Update User</span>. The badge changes to green.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.9</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Delete</span> button on Vikram's row. A confirmation modal appears with a warning.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.10</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Delete User</span> to confirm deletion. The user is removed from the table.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">5.11</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Administrators can onboard, update roles, or revoke access. Built-in safety: you cannot delete your own active account, and all passwords are bcrypt-hashed on the server."</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 6: RBAC ===== -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">6</div>
+          <div class="step-name">RBAC Security Verification (Role Switching)</div>
+          <div class="step-timing">05:00 - 05:50</div>
+        </div>
+
+        <div class="action-sequence">
+          <div class="action-row">
+            <div class="action-num">6.1</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Now I'll prove the role-based access control by logging in as different roles."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.2</div>
+            <div><span class="tag tag-click">CLICK</span> the <span class="btn-name">Sign Out</span> button in the top-right corner of the navbar. You return to the Login screen.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.3</div>
+            <div><span class="tag tag-click">CLICK</span> the orange <span class="btn-name">Warehouse</span> quick-login button. Credentials auto-fill.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.4</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Sign In to Portal</span>. Dashboard loads.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.5</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the navigation bar. The <strong>Users</strong> tab and <strong>Customers</strong> tab are <strong>completely hidden!</strong> Move your cursor across the nav to show there are fewer tabs.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.6</div>
+            <div><span class="tag tag-say">SAY</span> <em>"As a Warehouse Operator, the Users and Customers tabs are completely hidden. The server also blocks any direct API calls with 403 Forbidden."</em></div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.7</div>
+            <div><span class="tag tag-navigate">NAV</span> Click the <span class="btn-name">Products</span> tab. Show that Warehouse CAN use <span class="btn-name">Adjust Stock</span>.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.8</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Sign Out</span> again. Return to Login.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.9</div>
+            <div><span class="tag tag-click">CLICK</span> the green <span class="btn-name">Sales</span> quick-login button. Then <span class="tag tag-click">CLICK</span> <span class="btn-name">Sign In to Portal</span>.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.10</div>
+            <div><span class="tag tag-look">OBSERVE</span> Point at the nav bar: Sales can see <strong>Customers</strong> and <strong>Challans</strong>, but <strong>Users tab is hidden</strong> and <strong>Stock Adjustment is disabled</strong>.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">6.11</div>
+            <div><span class="tag tag-say">SAY</span> <em>"Sales can access CRM and create draft challans, but cannot adjust stock or manage users. This guarantees complete segregation of duties across the organization."</em></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== STEP 7: WRAP UP ===== -->
+      <div class="step-card">
+        <div class="step-header">
+          <div class="step-number">7</div>
+          <div class="step-name">Architecture Summary & Closing</div>
+          <div class="step-timing">05:50 - 06:10</div>
+        </div>
+
+        <div class="action-sequence">
+          <div class="action-row">
+            <div class="action-num">7.1</div>
+            <div><span class="tag tag-click">CLICK</span> <span class="btn-name">Sign Out</span> and log back in as <span class="btn-name">Admin</span> via the quick-login button.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">7.2</div>
+            <div><span class="tag tag-navigate">NAV</span> Go to the <span class="btn-name">Products</span> tab. Slowly scroll through the page to show the clean, responsive layout.</div>
+          </div>
+          <div class="action-row">
+            <div class="action-num">7.3</div>
+            <div><span class="tag tag-say">SAY</span> <em>"To summarize: this portal delivers enterprise-grade operations with strict transactional integrity using Prisma interactive transactions, PostgreSQL row-level locking, an immutable audit trail, and a custom pure CSS design system with no external UI framework dependencies. Thank you for your time!"</em></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Mini ERP + CRM Operations Portal - Video Showcase Script</span>
+      <span>Page 3 of 4</span>
+    </div>
+  </div>
+
+  <!-- ================= PAGE 4 ================= -->
+  <div class="page-break"></div>
+  <div class="sheet-page">
+    <div>
+      <div class="section-title" style="margin-top: 0;">
+        <span>Quick-Reference Cheat Sheet & Pro Tips</span>
+        <span class="section-tag">Keep Open on a Second Screen</span>
+      </div>
+
+      <div style="background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 7px; padding: 10px 12px; margin-bottom: 8px;">
+        <div style="font-weight: 700; color: #0f172a; margin-bottom: 6px; font-size: 8.8pt;">
+          10 Golden Rules for a High-Scoring Demo
+        </div>
+        <div class="grid-2">
+          <ul class="clean-list">
+            <li><strong>1. Deliberate cursor movements:</strong> Don't jerk the mouse. Hover slowly and point precisely at what you're discussing.</li>
+            <li><strong>2. Pause after modals open:</strong> Wait 1 second so the viewer sees the form before you start typing.</li>
+            <li><strong>3. Explain the WHY:</strong> Don't just say "I'll click this". Explain <em>why</em> row locks matter and <em>why</em> prices are snapshotted.</li>
+            <li><strong>4. Use the 1-click login buttons:</strong> Shows developer ergonomics and saves time on camera.</li>
+            <li><strong>5. Show cause and effect:</strong> After confirming a challan, switch to Products to show stock went down.</li>
+          </ul>
+          <ul class="clean-list">
+            <li><strong>6. Highlight safety checks:</strong> Point at low-stock badges, overdue follow-ups, and the delete confirmation modal.</li>
+            <li><strong>7. Do one dry run:</strong> Practice the full flow once without recording. Builds confidence and finds data gaps.</li>
+            <li><strong>8. Speak clearly:</strong> Moderate pace, confident tone, avoid filler words ("um", "like").</li>
+            <li><strong>9. Record in 1080p 60fps:</strong> Use OBS Studio (free) or Windows Snipping Tool (Win+Shift+R).</li>
+            <li><strong>10. Mention the tech stack naturally:</strong> Weave in React 19, TypeScript, Express, Prisma, PostgreSQL Neon.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section-title">
+        <span>Key Technical Terms to Mention During Recording</span>
+        <span class="section-tag">High-Impact Vocabulary</span>
+      </div>
+
+      <div class="tech-pill-container">
+        <span class="tech-pill">Row-Level Locking (SELECT FOR UPDATE)</span>
+        <span class="tech-pill">Prisma Interactive Transactions</span>
+        <span class="tech-pill">Immutable Price Snapshotting</span>
+        <span class="tech-pill">Atomic Stock Deduction</span>
+        <span class="tech-pill">Zero-Stock-Leakage Concurrency Guard</span>
+        <span class="tech-pill">Permanent Audit Trail (StockLog)</span>
+        <span class="tech-pill">Role-Based Access Control (RBAC)</span>
+        <span class="tech-pill">JWT Bearer Authentication</span>
+        <span class="tech-pill">Zod Schema Validation</span>
+        <span class="tech-pill">Pure CSS Admin Design System</span>
+        <span class="tech-pill">PostgreSQL on Neon Cloud</span>
+        <span class="tech-pill">React 19 + TypeScript on Vite</span>
+      </div>
+
+      <div class="section-title" style="margin-top: 10px;">
+        <span>Emergency Troubleshooting (If Something Goes Wrong)</span>
+        <span class="section-tag">Quick Fixes</span>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 160px;">What Went Wrong</th>
+            <th style="width: 170px;">Why It Happened</th>
+            <th>What to Do Right Now</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Login fails / 401 error</strong></td>
+            <td>Stale token in browser storage</td>
+            <td>Press <strong>F5</strong> to refresh, then click the 1-click Admin button again.</td>
+          </tr>
+          <tr>
+            <td><strong>"Adjust Stock" is grayed out</strong></td>
+            <td>You're logged in as Sales or Accounts</td>
+            <td>Sign Out → login as <strong>Admin</strong> or <strong>Warehouse</strong>.</td>
+          </tr>
+          <tr>
+            <td><strong>Challan confirm shows error</strong></td>
+            <td>Not enough stock for the items</td>
+            <td>Pick a product with 50+ stock, or do a Stock In (+100) first.</td>
+          </tr>
+          <tr>
+            <td><strong>"Users" tab missing from nav</strong></td>
+            <td>Only Admin role can see it</td>
+            <td>Sign Out → login as <strong>Admin</strong> (<code>admin@operations.com</code>).</td>
+          </tr>
+          <tr>
+            <td><strong>Page shows blank / error</strong></td>
+            <td>Dev server may have crashed</td>
+            <td>Go to terminal → run <code>npm run dev</code> again in the project root.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 10px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 6px; padding: 8px 12px; font-size: 8pt; color: #166534;">
+        <strong>You're ready!</strong> Follow the numbered steps on pages 2-3 in exact order. Each sub-step tells you precisely what to click, what to type, and what to say. Good luck with your recording!
+      </div>
+    </div>
+
+    <div class="footer-bar">
+      <span>Mini ERP + CRM Operations Portal - Video Showcase Script</span>
+      <span>Page 4 of 4</span>
+    </div>
+  </div>
+
+</body>
+</html>
