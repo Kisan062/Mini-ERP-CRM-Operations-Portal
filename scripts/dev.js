@@ -28,10 +28,16 @@ function cleanup() {
   console.log('\n🛑 Shutting down servers...');
   if (process.platform === 'win32') {
     if (backend.pid) {
-      try { spawn('taskkill', ['/pid', backend.pid.toString(), '/f', '/t']); } catch (_) {}
+      try {
+        const k = spawn('taskkill', ['/pid', backend.pid.toString(), '/f', '/t'], { shell: true });
+        k.on('error', () => {});
+      } catch (_) {}
     }
     if (frontend.pid) {
-      try { spawn('taskkill', ['/pid', frontend.pid.toString(), '/f', '/t']); } catch (_) {}
+      try {
+        const k = spawn('taskkill', ['/pid', frontend.pid.toString(), '/f', '/t'], { shell: true });
+        k.on('error', () => {});
+      } catch (_) {}
     }
   } else {
     try { backend.kill('SIGTERM'); } catch (_) {}
