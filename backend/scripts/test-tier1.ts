@@ -12,7 +12,7 @@
  * 9. Re-confirmation prevention
  * 10. Challan cancellation and stock restoration (StockLog IN)
  */
-import process from 'node:process';
+export {};
 
 const BASE_URL = process.env.API_URL || 'http://localhost:5000/api';
 
