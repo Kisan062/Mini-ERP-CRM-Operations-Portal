@@ -9,7 +9,7 @@ import { Pagination } from '../../components/Pagination';
 
 interface NewItemRow {
   productId: string;
-  quantity: number;
+  quantity: number | string;
 }
 
 export const ChallansPage: React.FC = () => {
@@ -119,23 +119,29 @@ export const ChallansPage: React.FC = () => {
       return;
     }
 
-    // Validate that all rows have a product selected
+    // Validate that all rows have a product selected and positive integer quantity
+    const parsedItems: { productId: string; quantity: number }[] = [];
     for (const item of items) {
       if (!item.productId) {
         showToast('Please select a product for all line items', 'error');
         return;
       }
-      if (item.quantity <= 0) {
-        showToast('Quantity must be greater than zero', 'error');
+      const qty = parseInt(String(item.quantity), 10);
+      if (isNaN(qty) || qty <= 0) {
+        showToast('Quantity must be greater than zero for all line items', 'error');
         return;
       }
+      parsedItems.push({
+        productId: item.productId,
+        quantity: qty,
+      });
     }
 
     setSubmitting(true);
     try {
       const res = await api.post<Challan>('/challans', {
         customerId,
-        items,
+        items: parsedItems,
       });
 
       showToast(`Challan ${res.data.challanNumber} created as DRAFT!`, 'success');
@@ -431,9 +437,7 @@ export const ChallansPage: React.FC = () => {
                           style={{ width: '100%' }}
                           required
                           value={row.quantity}
-                          onChange={(e) =>
-                            updateItemRow(idx, 'quantity', parseInt(e.target.value, 10) || 1)
-                          }
+                          onChange={(e) => updateItemRow(idx, 'quantity', e.target.value)}
                         />
                       </td>
                       <td>
