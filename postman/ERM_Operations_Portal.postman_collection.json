@@ -528,6 +528,142 @@
           }
         }
       ]
+    },
+    {
+      "name": "Customers (CRM)",
+      "item": [
+        {
+          "name": "1. List Customers (Search, Filter, Pagination)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{salesToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customers?page=1&limit=20&search=&status=ACTIVE&customerType=WHOLESALE",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" },
+                { "key": "search", "value": "" },
+                { "key": "status", "value": "ACTIVE" },
+                { "key": "customerType", "value": "WHOLESALE" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Create Customer (Admin or Sales)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const json = pm.response.json();",
+                  "if (json.data && json.data.id) {",
+                  "    pm.collectionVariables.set('sampleCustomerId', json.data.id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{salesToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Vikram Singhania\",\n  \"mobile\": \"+91 98450 11223\",\n  \"email\": \"vikram@singhaniatraders.in\",\n  \"businessName\": \"Singhania Industrial Traders\",\n  \"gstNumber\": \"29AABCS1234D1Z5\",\n  \"customerType\": \"DISTRIBUTOR\",\n  \"address\": \"Industrial Estate, Peenya, Bengaluru, KA\",\n  \"status\": \"LEAD\",\n  \"notes\": \"Interested in exclusive regional distribution rights for fasteners and bearings.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customers",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers"]
+            }
+          }
+        },
+        {
+          "name": "3. Get Customer Details (with Challans history)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{salesToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/customers/{{sampleCustomerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers", "{{sampleCustomerId}}"]
+            }
+          }
+        },
+        {
+          "name": "4. Update Customer Details",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{salesToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACTIVE\",\n  \"mobile\": \"+91 98450 99887\",\n  \"notes\": \"Upgraded to active distributor account following credit verification.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customers/{{sampleCustomerId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers", "{{sampleCustomerId}}"]
+            }
+          }
+        },
+        {
+          "name": "5. Record Customer Follow-Up (CRM)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{salesToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"Met with procurement manager: Requested quote for 250 units of M8 Hex Bolts and 50 units Bearing 6204.\",\n  \"followUpDate\": \"2026-09-15T10:00:00.000Z\",\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/customers/{{sampleCustomerId}}/followups",
+              "host": ["{{baseUrl}}"],
+              "path": ["customers", "{{sampleCustomerId}}", "followups"]
+            }
+          }
+        }
+      ]
     }
   ]
 }
+
