@@ -18,33 +18,36 @@ export class ProductsService {
       throw AppError.conflict(`Product with SKU "${data.sku}" already exists`);
     }
 
-    return await prisma.$transaction(async (tx) => {
-      const product = await tx.product.create({
-        data: {
-          name: data.name,
-          sku: data.sku,
-          category: data.category,
-          unitPrice: new Prisma.Decimal(data.unitPrice),
-          currentStock: data.initialStock,
-          minStockAlert: data.minStockAlert,
-          location: data.location || null,
-        },
-      });
-
-      if (data.initialStock > 0) {
-        await tx.stockLog.create({
+    return await prisma.$transaction(
+      async (tx) => {
+        const product = await tx.product.create({
           data: {
-            productId: product.id,
-            quantityChanged: data.initialStock,
-            movementType: 'IN',
-            reason: 'Initial Stock',
-            createdBy: userId,
+            name: data.name,
+            sku: data.sku,
+            category: data.category,
+            unitPrice: new Prisma.Decimal(data.unitPrice),
+            currentStock: data.initialStock,
+            minStockAlert: data.minStockAlert,
+            location: data.location || null,
           },
         });
-      }
 
-      return product;
-    });
+        if (data.initialStock > 0) {
+          await tx.stockLog.create({
+            data: {
+              productId: product.id,
+              quantityChanged: data.initialStock,
+              movementType: 'IN',
+              reason: 'Initial Stock',
+              createdBy: userId,
+            },
+          });
+        }
+
+        return product;
+      },
+      { maxWait: 10000, timeout: 20000 }
+    );
   }
 
   static async updateProduct(id: string, data: UpdateProductInput) {
@@ -70,50 +73,53 @@ export class ProductsService {
   }
 
   static async adjustStock(productId: string, data: StockAdjustmentInput, userId: string) {
-    return await prisma.$transaction(async (tx) => {
-      const product = await tx.product.findUnique({
-        where: { id: productId },
-      });
+    return await prisma.$transaction(
+      async (tx) => {
+        const product = await tx.product.findUnique({
+          where: { id: productId },
+        });
 
-      if (!product) {
-        throw AppError.notFound(`Product with ID "${productId}" not found`);
-      }
-
-      if (data.movementType === 'OUT') {
-        if (product.currentStock < data.quantity) {
-          throw AppError.badRequest(
-            `Insufficient stock for "${product.name}" (SKU: ${product.sku}). Available: ${product.currentStock}, Requested: ${data.quantity}`
-          );
+        if (!product) {
+          throw AppError.notFound(`Product with ID "${productId}" not found`);
         }
-      }
 
-      const updatedProduct = await tx.product.update({
-        where: { id: productId },
-        data: {
-          currentStock:
-            data.movementType === 'IN'
-              ? { increment: data.quantity }
-              : { decrement: data.quantity },
-        },
-      });
+        if (data.movementType === 'OUT') {
+          if (product.currentStock < data.quantity) {
+            throw AppError.badRequest(
+              `Insufficient stock for "${product.name}" (SKU: ${product.sku}). Available: ${product.currentStock}, Requested: ${data.quantity}`
+            );
+          }
+        }
 
-      const stockLog = await tx.stockLog.create({
-        data: {
-          productId,
-          quantityChanged: data.quantity,
-          movementType: data.movementType,
-          reason: data.reason,
-          createdBy: userId,
-        },
-        include: {
-          createdByUser: {
-            select: { id: true, name: true, email: true, role: true },
+        const updatedProduct = await tx.product.update({
+          where: { id: productId },
+          data: {
+            currentStock:
+              data.movementType === 'IN'
+                ? { increment: data.quantity }
+                : { decrement: data.quantity },
           },
-        },
-      });
+        });
 
-      return { product: updatedProduct, stockLog };
-    });
+        const stockLog = await tx.stockLog.create({
+          data: {
+            productId,
+            quantityChanged: data.quantity,
+            movementType: data.movementType,
+            reason: data.reason,
+            createdBy: userId,
+          },
+          include: {
+            createdByUser: {
+              select: { id: true, name: true, email: true, role: true },
+            },
+          },
+        });
+
+        return { product: updatedProduct, stockLog };
+      },
+      { maxWait: 10000, timeout: 20000 }
+    );
   }
 
   static async listProducts(query: ListProductsQuery) {

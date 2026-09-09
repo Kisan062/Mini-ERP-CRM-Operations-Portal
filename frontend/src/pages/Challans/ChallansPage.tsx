@@ -111,7 +111,10 @@ export const ChallansPage: React.FC = () => {
   };
 
   // Handle Create Submit
-  const handleCreateSubmit = async (e: React.FormEvent) => {
+  const handleCreateSubmit = async (
+    e: React.FormEvent,
+    targetStatus: 'DRAFT' | 'CONFIRMED' = 'DRAFT'
+  ) => {
     e.preventDefault();
 
     if (!customerId) {
@@ -142,9 +145,13 @@ export const ChallansPage: React.FC = () => {
       const res = await api.post<Challan>('/challans', {
         customerId,
         items: parsedItems,
+        status: targetStatus,
       });
 
-      showToast(`Challan ${res.data.challanNumber} created as DRAFT!`, 'success');
+      showToast(
+        `Challan ${res.data.challanNumber} saved as ${targetStatus}!`,
+        'success'
+      );
       setIsCreateModalOpen(false);
       fetchChallans(1);
     } catch (err: any) {
@@ -479,7 +486,7 @@ export const ChallansPage: React.FC = () => {
               Total Dispatch Quantity: <strong>{totalDraftQuantity} units</strong> across {items.length} line(s)
             </span>
             <span style={{ color: '#1e40af', fontSize: '11px' }}>
-              ℹ Challan will be created as <strong>DRAFT</strong> (No stock deducted until confirmed).
+              ℹ Choose <strong>Save as Draft</strong> (no stock deducted) or <strong>Save & Confirm</strong> (immediate stock deduction).
             </span>
           </div>
 
@@ -491,8 +498,21 @@ export const ChallansPage: React.FC = () => {
             >
               Cancel
             </button>
-            <button type="submit" className="btn btn-primary" disabled={submitting}>
-              {submitting ? 'Creating...' : 'Save Draft Challan'}
+            <button
+              type="button"
+              className="btn btn-secondary"
+              disabled={submitting}
+              onClick={(e) => handleCreateSubmit(e, 'DRAFT')}
+            >
+              {submitting ? 'Saving...' : '💾 Save as Draft'}
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              disabled={submitting}
+              onClick={(e) => handleCreateSubmit(e, 'CONFIRMED')}
+            >
+              {submitting ? 'Confirming...' : '✅ Save & Confirm'}
             </button>
           </div>
         </form>

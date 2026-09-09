@@ -11,6 +11,7 @@ export const createChallanSchema = z.object({
     items: z
       .array(challanItemInputSchema)
       .min(1, 'At least one line item is required in a challan'),
+    status: z.enum(['DRAFT', 'CONFIRMED']).optional().default('DRAFT'),
   }),
 });
 

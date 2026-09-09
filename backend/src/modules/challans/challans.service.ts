@@ -78,8 +78,12 @@ export class ChallansService {
         },
       });
 
+      if (data.status === 'CONFIRMED') {
+        return await ChallansService.executeConfirmationLogic(tx, challan, userId);
+      }
+
       return challan;
-    });
+    }, { maxWait: 10000, timeout: 20000 });
   }
 
   static async updateChallan(id: string, data: UpdateChallanInput) {
@@ -169,7 +173,7 @@ export class ChallansService {
       });
 
       return updatedChallan;
-    });
+    }, { maxWait: 10000, timeout: 20000 });
   }
 
   static async confirmChallan(id: string, userId: string) {
@@ -195,135 +199,142 @@ export class ChallansService {
         throw AppError.badRequest(`Cannot confirm cancelled challan "${challan.challanNumber}".`);
       }
 
-      if (challan.items.length === 0) {
-        throw AppError.badRequest(`Challan "${challan.challanNumber}" has no line items.`);
+      return await ChallansService.executeConfirmationLogic(tx, challan, userId);
+    }, { maxWait: 10000, timeout: 20000 });
+  }
+
+  private static async executeConfirmationLogic(
+    tx: Prisma.TransactionClient,
+    challan: any,
+    userId: string
+  ) {
+    if (!challan.items || challan.items.length === 0) {
+      throw AppError.badRequest(`Challan "${challan.challanNumber}" has no line items.`);
+    }
+
+    // 2. Aggregate required quantity per product
+    const requiredQtyByProduct = new Map<string, number>();
+    for (const item of challan.items) {
+      const cur = requiredQtyByProduct.get(item.productId) || 0;
+      requiredQtyByProduct.set(item.productId, cur + item.quantity);
+    }
+
+    const productIds = Array.from(requiredQtyByProduct.keys());
+
+    // 3. Row locking in PostgreSQL to prevent concurrent race conditions
+    await tx.$queryRaw`
+      SELECT id, "currentStock" 
+      FROM "Product" 
+      WHERE id IN (${Prisma.join(productIds)}) 
+      FOR UPDATE
+    `;
+
+    // 4. Fetch the locked products
+    const products: Product[] = await tx.product.findMany({
+      where: { id: { in: productIds } },
+    });
+
+    const productMap = new Map(products.map((p: Product) => [p.id, p]));
+
+    // 5. Verify stock availability for EVERY line item
+    const shortages: {
+      productId: string;
+      productName: string;
+      sku: string;
+      available: number;
+      requested: number;
+      shortBy: number;
+    }[] = [];
+
+    for (const [productId, requiredQty] of requiredQtyByProduct.entries()) {
+      const product = productMap.get(productId);
+
+      if (!product) {
+        shortages.push({
+          productId,
+          productName: 'Unknown Product',
+          sku: 'UNKNOWN',
+          available: 0,
+          requested: requiredQty,
+          shortBy: requiredQty,
+        });
+        continue;
       }
 
-      // 2. Aggregate required quantity per product
-      const requiredQtyByProduct = new Map<string, number>();
-      for (const item of challan.items) {
-        const cur = requiredQtyByProduct.get(item.productId) || 0;
-        requiredQtyByProduct.set(item.productId, cur + item.quantity);
+      if (product.currentStock < requiredQty) {
+        shortages.push({
+          productId: product.id,
+          productName: product.name,
+          sku: product.sku,
+          available: product.currentStock,
+          requested: requiredQty,
+          shortBy: requiredQty - product.currentStock,
+        });
       }
+    }
 
-      const productIds = Array.from(requiredQtyByProduct.keys());
+    // If any product is short, abort the whole transaction immediately with 400
+    if (shortages.length > 0) {
+      const messageDetails = shortages
+        .map(
+          (s) =>
+            `• "${s.productName}" (SKU: ${s.sku}): Available = ${s.available}, Required = ${s.requested} (Short by ${s.shortBy})`
+        )
+        .join('\n');
 
-      // 3. Row locking in PostgreSQL to prevent concurrent race conditions
-      await tx.$queryRaw`
-        SELECT id, "currentStock" 
-        FROM "Product" 
-        WHERE id IN (${Prisma.join(productIds)}) 
-        FOR UPDATE
-      `;
+      throw AppError.badRequest(
+        `Cannot confirm challan "${challan.challanNumber}". Insufficient stock for ${shortages.length} product(s):\n${messageDetails}`,
+        { shortages }
+      );
+    }
 
-      // 4. Fetch the locked products
-      const products: Product[] = await tx.product.findMany({
-        where: { id: { in: productIds } },
+    // 6. All lines pass! Decrement stock and write StockLog rows
+    for (const [productId, quantityToDeduct] of requiredQtyByProduct.entries()) {
+      // Enforce stock >= quantityToDeduct in WHERE clause as an atomic safeguard
+      const updateResult = await tx.product.updateMany({
+        where: {
+          id: productId,
+          currentStock: { gte: quantityToDeduct },
+        },
+        data: {
+          currentStock: { decrement: quantityToDeduct },
+        },
       });
 
-      const productMap = new Map(products.map((p: Product) => [p.id, p]));
-
-      // 5. Verify stock availability for EVERY line item
-      const shortages: {
-        productId: string;
-        productName: string;
-        sku: string;
-        available: number;
-        requested: number;
-        shortBy: number;
-      }[] = [];
-
-      for (const [productId, requiredQty] of requiredQtyByProduct.entries()) {
-        const product = productMap.get(productId);
-
-        if (!product) {
-          shortages.push({
-            productId,
-            productName: 'Unknown Product',
-            sku: 'UNKNOWN',
-            available: 0,
-            requested: requiredQty,
-            shortBy: requiredQty,
-          });
-          continue;
-        }
-
-        if (product.currentStock < requiredQty) {
-          shortages.push({
-            productId: product.id,
-            productName: product.name,
-            sku: product.sku,
-            available: product.currentStock,
-            requested: requiredQty,
-            shortBy: requiredQty - product.currentStock,
-          });
-        }
-      }
-
-      // If any product is short, abort the whole transaction immediately with 400
-      if (shortages.length > 0) {
-        const messageDetails = shortages
-          .map(
-            (s) =>
-              `• "${s.productName}" (SKU: ${s.sku}): Available = ${s.available}, Required = ${s.requested} (Short by ${s.shortBy})`
-          )
-          .join('\n');
-
+      if (updateResult.count === 0) {
         throw AppError.badRequest(
-          `Cannot confirm challan "${challan.challanNumber}". Insufficient stock for ${shortages.length} product(s):\n${messageDetails}`,
-          { shortages }
+          `Stock validation failed at database level for product ID "${productId}". Transaction rolled back.`
         );
       }
 
-      // 6. All lines pass! Decrement stock and write StockLog rows
-      for (const [productId, quantityToDeduct] of requiredQtyByProduct.entries()) {
-        // Enforce stock >= quantityToDeduct in WHERE clause as an atomic safeguard
-        const updateResult = await tx.product.updateMany({
-          where: {
-            id: productId,
-            currentStock: { gte: quantityToDeduct },
-          },
-          data: {
-            currentStock: { decrement: quantityToDeduct },
-          },
-        });
-
-        if (updateResult.count === 0) {
-          // This should never happen due to row locking, but guards against any edge case
-          throw AppError.badRequest(
-            `Stock validation failed at database level for product ID "${productId}". Transaction rolled back.`
-          );
-        }
-
-        // Write StockLog entry
-        await tx.stockLog.create({
-          data: {
-            productId,
-            quantityChanged: quantityToDeduct,
-            movementType: 'OUT',
-            reason: `Challan ${challan.challanNumber}`,
-            createdBy: userId,
-          },
-        });
-      }
-
-      // 7. Update Challan status to CONFIRMED
-      const confirmedChallan = await tx.challan.update({
-        where: { id },
+      // Write StockLog entry
+      await tx.stockLog.create({
         data: {
-          status: 'CONFIRMED',
-        },
-        include: {
-          customer: true,
-          createdByUser: {
-            select: { id: true, name: true, email: true, role: true },
-          },
-          items: true,
+          productId,
+          quantityChanged: quantityToDeduct,
+          movementType: 'OUT',
+          reason: `Challan ${challan.challanNumber}`,
+          createdBy: userId,
         },
       });
+    }
 
-      return confirmedChallan;
+    // 7. Update Challan status to CONFIRMED
+    const confirmedChallan = await tx.challan.update({
+      where: { id: challan.id },
+      data: {
+        status: 'CONFIRMED',
+      },
+      include: {
+        customer: true,
+        createdByUser: {
+          select: { id: true, name: true, email: true, role: true },
+        },
+        items: true,
+      },
     });
+
+    return confirmedChallan;
   }
 
   static async cancelChallan(id: string, userId: string) {
@@ -386,7 +397,7 @@ export class ChallansService {
           include: { customer: true, items: true },
         });
       }
-    });
+    }, { maxWait: 10000, timeout: 20000 });
   }
 
   static async listChallans(query: ListChallansQuery) {
