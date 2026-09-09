@@ -94,10 +94,10 @@ All demo accounts are pre-seeded in the database:
 
 | Email | Password | Role | Description |
 | :--- | :--- | :---: | :--- |
-| `admin@operations.com` | `Role@123` | `ADMIN` | Unrestricted superuser access across all modules |
-| `sales@operations.com` | `Role@123` | `SALES` | Can manage CRM leads/customers and draft new challans |
-| `warehouse@operations.com` | `Role@123` | `WAREHOUSE` | Manages stock movements and confirms delivery shipments |
-| `accounts@operations.com` | `Role@123` | `ACCOUNTS` | Read-only auditor for challan records and stock ledger |
+| `admin@operations.com` | `Admin@123` | `ADMIN` | Unrestricted superuser access across all modules |
+| `sales@operations.com` | `Sales@123` | `SALES` | Can manage CRM leads/customers and draft new challans |
+| `warehouse@operations.com` | `Warehouse@123` | `WAREHOUSE` | Manages stock movements and confirms delivery shipments |
+| `accounts@operations.com` | `Accounts@123` | `ACCOUNTS` | Read-only auditor for challan records and stock ledger |
 
 > **Quick Switcher**: The frontend login page includes 1-click role demo buttons that prefill credentials instantly.
 

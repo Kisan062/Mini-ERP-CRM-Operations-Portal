@@ -689,3 +689,43 @@ body {
   color: var(--text-main);
   margin-bottom: 4px;
 }
+
+/* Print Styles for Challan Invoice / Export PDF */
+@media print {
+  body {
+    background-color: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .navbar,
+  .toolbar,
+  .toast-container,
+  .modal-close,
+  .modal-footer button:not(.btn-print-only) {
+    display: none !important;
+  }
+
+  .modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+  }
+
+  .modal-dialog {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .card,
+  .admin-table {
+    border: 1px solid #cbd5e1 !important;
+  }
+
+  .admin-table th {
+    background-color: #f1f5f9 !important;
+    color: #000000 !important;
+  }
+}

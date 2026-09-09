@@ -614,6 +614,15 @@ export const ChallansPage: React.FC = () => {
             </div>
 
             <div className="modal-footer" style={{ margin: '20px -20px -20px' }}>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                style={{ marginRight: 'auto' }}
+                onClick={() => window.print()}
+                title="Print delivery challan or save as PDF"
+              >
+                🖨 Print / Save as PDF
+              </button>
               {canCreateOrConfirm && selectedChallan.status === 'DRAFT' && (
                 <button
                   className="btn btn-success"
