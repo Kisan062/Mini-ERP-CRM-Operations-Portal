@@ -9,6 +9,7 @@ import authRoutes from './modules/auth/auth.routes';
 import productsRoutes from './modules/products/products.routes';
 import challansRoutes from './modules/challans/challans.routes';
 import customersRoutes from './modules/customers/customers.routes';
+import usersRoutes from './modules/users/users.routes';
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/challans', challansRoutes);
 app.use('/api/customers', customersRoutes);
+app.use('/api/users', usersRoutes);
 
 // Fallback for unmatched routes
 app.all('*', (req: Request, res: Response, next: NextFunction) => {

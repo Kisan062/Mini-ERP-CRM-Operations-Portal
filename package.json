@@ -12,7 +12,8 @@
     "build:frontend": "npm --prefix frontend run build",
     "seed": "npm --prefix backend run seed",
     "test:tier1": "npm --prefix backend run test:tier1",
-    "test:tier2": "npm --prefix backend run test:tier2"
+    "test:tier2": "npm --prefix backend run test:tier2",
+    "test:users": "npm --prefix backend run test:users"
   },
   "keywords": [
     "erp",

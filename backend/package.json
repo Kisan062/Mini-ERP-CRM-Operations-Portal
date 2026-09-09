@@ -12,7 +12,8 @@
     "prisma:deploy": "prisma migrate deploy",
     "seed": "tsx prisma/seed.ts",
     "test:tier1": "tsx scripts/test-tier1.ts",
-    "test:tier2": "tsx scripts/test-tier2.ts"
+    "test:tier2": "tsx scripts/test-tier2.ts",
+    "test:users": "tsx scripts/test-users.ts"
   },
   "keywords": ["erp", "crm", "wholesale", "distribution", "prisma", "express"],
   "author": "",

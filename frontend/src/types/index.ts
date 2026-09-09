@@ -6,6 +6,10 @@ export interface User {
   email: string;
   role: Role;
   createdAt?: string;
+  _count?: {
+    stockLogs: number;
+    challansCreated: number;
+  };
 }
 
 export type CustomerType = 'RETAIL' | 'WHOLESALE' | 'DISTRIBUTOR';

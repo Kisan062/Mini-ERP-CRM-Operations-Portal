@@ -300,6 +300,13 @@ All requests expecting or returning payloads use `Content-Type: application/json
 - `PUT /api/customers/:id` - Update customer details.
 - `POST /api/customers/:id/followups` - Log interaction note and advance next follow-up date.
 
+### User Management (`/api/users`) - Restricted to `ADMIN`
+- `GET /api/users` - List all provisioned staff accounts with activity audit counters.
+- `POST /api/users` - Provision a new team account with specified role (`ADMIN`, `SALES`, `WAREHOUSE`, `ACCOUNTS`).
+- `GET /api/users/:id` - Retrieve staff member profile and activity summary.
+- `PUT /api/users/:id` - Update user name, role, or reset password.
+- `DELETE /api/users/:id` - Remove account (safeguards against self-deletion and preserving accounting audit trails).
+
 ---
 
 ## Postman Collection

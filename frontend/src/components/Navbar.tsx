@@ -2,8 +2,8 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 
 interface NavbarProps {
-  activeTab: 'products' | 'challans' | 'customers';
-  onTabChange: (tab: 'products' | 'challans' | 'customers') => void;
+  activeTab: 'products' | 'challans' | 'customers' | 'users';
+  onTabChange: (tab: 'products' | 'challans' | 'customers' | 'users') => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange }) => {
@@ -36,6 +36,14 @@ export const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange }) => {
           >
             👥 Customers (CRM)
           </button>
+          {user?.role === 'ADMIN' && (
+            <button
+              className={`nav-link ${activeTab === 'users' ? 'active' : ''}`}
+              onClick={() => onTabChange('users')}
+            >
+              🔐 Users
+            </button>
+          )}
         </div>
 
         <div className="nav-user">

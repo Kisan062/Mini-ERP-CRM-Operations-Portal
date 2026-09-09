@@ -6,8 +6,9 @@ import { Login } from './pages/Login';
 import { ProductsPage } from './pages/Products/ProductsPage';
 import { ChallansPage } from './pages/Challans/ChallansPage';
 import { CustomersPage } from './pages/Customers/CustomersPage';
+import { UsersPage } from './pages/Users/UsersPage';
 
-type ActiveTab = 'products' | 'challans' | 'customers';
+type ActiveTab = 'products' | 'challans' | 'customers' | 'users';
 
 const PortalDashboard: React.FC = () => {
   const { user, loading } = useAuth();
@@ -55,6 +56,7 @@ const PortalDashboard: React.FC = () => {
         {activeTab === 'products' && <ProductsPage />}
         {activeTab === 'challans' && <ChallansPage />}
         {activeTab === 'customers' && <CustomersPage />}
+        {activeTab === 'users' && user.role === 'ADMIN' && <UsersPage />}
       </main>
     </div>
   );
