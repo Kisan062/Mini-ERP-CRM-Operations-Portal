@@ -17,8 +17,13 @@ const app = express();
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. mobile apps, curl, postman) or matching client URL
-      if (!origin || ENV.NODE_ENV === 'development' || origin === ENV.CLIENT_URL) {
+      const allowedClient = (ENV.CLIENT_URL || '').replace(/\/+$/, '');
+      if (
+        !origin ||
+        ENV.NODE_ENV === 'development' ||
+        origin === allowedClient ||
+        origin === `${allowedClient}/`
+      ) {
         callback(null, true);
       } else {
         callback(new Error('Blocked by CORS policy'));
