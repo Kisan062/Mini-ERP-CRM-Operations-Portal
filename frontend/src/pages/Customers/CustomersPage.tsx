@@ -334,7 +334,7 @@ export const CustomersPage: React.FC = () => {
                               {new Date(c.followUpDate).toLocaleDateString()}
                             </span>
                           ) : (
-                            <span style={{ color: '#94a3b8' }}>—</span>
+                            <span style={{ color: '#94a3b8' }}>-</span>
                           )}
                         </td>
                         <td style={{ textAlign: 'right', whiteSpace: 'nowrap' }}>
@@ -536,7 +536,7 @@ export const CustomersPage: React.FC = () => {
       <Modal
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
-        title={`Edit Customer — ${selectedCustomer?.businessName}`}
+        title={`Edit Customer - ${selectedCustomer?.businessName}`}
         size="large"
       >
         <form onSubmit={handleEditSubmit}>

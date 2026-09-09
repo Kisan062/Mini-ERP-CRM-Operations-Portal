@@ -13,22 +13,22 @@
 
 ## Table of Contents
 
-- [Overview & Architecture](#overview--architecture)
-- [Key Business Invariants & Guarantees](#key-business-invariants--guarantees)
+- [Overview and Architecture](#overview-and-architecture)
+- [Key Business Invariants and Guarantees](#key-business-invariants-and-guarantees)
 - [Role-Based Access Control (RBAC)](#role-based-access-control-rbac)
 - [Demo Credentials](#demo-credentials)
 - [Project Structure](#project-structure)
 - [Local Development Setup](#local-development-setup)
 - [Environment Variables](#environment-variables)
-- [Automated Verification & Test Suites](#automated-verification--test-suites)
+- [Automated Verification and Test Suites](#automated-verification-and-test-suites)
 - [REST API Reference](#rest-api-reference)
 - [Postman Collection](#postman-collection)
 - [Production Deployment Guide](#production-deployment-guide)
-- [Assumptions & Trade-offs](#assumptions--trade-offs)
+- [Assumptions and Trade-offs](#assumptions-and-trade-offs)
 
 ---
 
-## Overview & Architecture
+## Overview and Architecture
 
 Wholesale and distribution companies require ironclad inventory accounting, auditable stock movements, immutable transaction snapshots, and lightweight CRM capabilities for sales and customer support. 
 
@@ -61,7 +61,7 @@ This repository implements a modular, 3-tier architecture:
 
 ---
 
-## Key Business Invariants & Guarantees
+## Key Business Invariants and Guarantees
 
 ### 1. Zero-Stock-Leakage & Concurrency Protection
 To prevent race conditions during high-volume wholesale operations (such as two warehouse dispatchers confirming orders simultaneously):
@@ -231,7 +231,7 @@ Visit **`http://localhost:5173`** in your browser and log in with any of the dem
 
 ---
 
-## Automated Verification & Test Suites
+## Automated Verification and Test Suites
 
 The codebase includes two automated test suites written in TypeScript to verify core business logic, edge cases, transactional rollbacks, and RBAC rules without requiring external mocking tools:
 
@@ -270,35 +270,35 @@ npm run test:tier2
 All requests expecting or returning payloads use `Content-Type: application/json`. Authenticated routes require an `Authorization: Bearer <token>` header.
 
 ### Authentication (`/api/auth`)
-- `POST /api/auth/register` — Create a new user (Restricted to `ADMIN`).
-- `POST /api/auth/login` — Authenticate and receive a JWT access token.
-- `GET /api/auth/me` — Retrieve the currently authenticated profile.
+- `POST /api/auth/register` - Create a new user (Restricted to `ADMIN`).
+- `POST /api/auth/login` - Authenticate and receive a JWT access token.
+- `GET /api/auth/me` - Retrieve the currently authenticated profile.
 
 ### Products & Inventory (`/api/products`)
-- `GET /api/products` — List all products with optional filters:
+- `GET /api/products` - List all products with optional filters:
   - `search`: Case-insensitive match on name or SKU.
   - `category`: Filter by category.
   - `lowStockOnly=true`: Return only items where `currentStock <= minStockAlert`.
-- `POST /api/products` — Create a new product (Requires `ADMIN` or `WAREHOUSE`).
-- `GET /api/products/:id` — Get product details.
-- `PUT /api/products/:id` — Update product details. Direct changes to `currentStock` are blocked.
-- `POST /api/products/:id/stock` — Adjust stock with audited reason (Requires `ADMIN` or `WAREHOUSE`).
-- `GET /api/products/:id/logs` — View full immutable stock movement history for a product.
+- `POST /api/products` - Create a new product (Requires `ADMIN` or `WAREHOUSE`).
+- `GET /api/products/:id` - Get product details.
+- `PUT /api/products/:id` - Update product details. Direct changes to `currentStock` are blocked.
+- `POST /api/products/:id/stock` - Adjust stock with audited reason (Requires `ADMIN` or `WAREHOUSE`).
+- `GET /api/products/:id/logs` - View full immutable stock movement history for a product.
 
 ### Delivery Challans (`/api/challans`)
-- `GET /api/challans` — List challans with search and status filter.
-- `POST /api/challans` — Create a `DRAFT` challan with price and name snapshots (Requires `ADMIN` or `SALES`).
-- `GET /api/challans/:id` — View challan details including frozen item snapshots.
-- `PUT /api/challans/:id` — Edit an existing `DRAFT` challan.
-- `PATCH /api/challans/:id/confirm` — Confirm challan, atomically decrementing warehouse stock (Requires `ADMIN` or `WAREHOUSE`).
-- `PATCH /api/challans/:id/cancel` — Cancel challan, restoring inventory if confirmed (Requires `ADMIN` or `WAREHOUSE`).
+- `GET /api/challans` - List challans with search and status filter.
+- `POST /api/challans` - Create a `DRAFT` challan with price and name snapshots (Requires `ADMIN` or `SALES`).
+- `GET /api/challans/:id` - View challan details including frozen item snapshots.
+- `PUT /api/challans/:id` - Edit an existing `DRAFT` challan.
+- `PATCH /api/challans/:id/confirm` - Confirm challan, atomically decrementing warehouse stock (Requires `ADMIN` or `WAREHOUSE`).
+- `PATCH /api/challans/:id/cancel` - Cancel challan, restoring inventory if confirmed (Requires `ADMIN` or `WAREHOUSE`).
 
 ### Customers / CRM (`/api/customers`)
-- `GET /api/customers` — Paginated customer list with multi-field search and type/status filters.
-- `POST /api/customers` — Create a customer record (Requires `ADMIN` or `SALES`).
-- `GET /api/customers/:id` — View customer profile, notes timeline, and order history.
-- `PUT /api/customers/:id` — Update customer details.
-- `POST /api/customers/:id/followups` — Log interaction note and advance next follow-up date.
+- `GET /api/customers` - Paginated customer list with multi-field search and type/status filters.
+- `POST /api/customers` - Create a customer record (Requires `ADMIN` or `SALES`).
+- `GET /api/customers/:id` - View customer profile, notes timeline, and order history.
+- `PUT /api/customers/:id` - Update customer details.
+- `POST /api/customers/:id/followups` - Log interaction note and advance next follow-up date.
 
 ---
 
@@ -355,7 +355,7 @@ postman/ERM_Operations_Portal.postman_collection.json
 
 ---
 
-## Assumptions & Trade-offs
+## Assumptions and Trade-offs
 
 1. **Authentication Storage**: Per the assignment specifications, JWT access tokens are stored in `localStorage` for ease of evaluation. In an enterprise financial deployment, httpOnly secure SameSite cookies with refresh-token rotation would be preferred.
 2. **Challan Numbering**: Generated using the sequential pattern `CH-YYYY-XXXXX` calculated transactionally to avoid collision.

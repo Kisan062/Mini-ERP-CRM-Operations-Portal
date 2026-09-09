@@ -309,7 +309,7 @@ export const ProductsPage: React.FC = () => {
                         <td style={{ fontWeight: 500 }}>{p.name}</td>
                         <td>{p.category}</td>
                         <td>₹{parseFloat(String(p.unitPrice)).toFixed(2)}</td>
-                        <td>{p.location || '—'}</td>
+                        <td>{p.location || '-'}</td>
                         <td>{p.minStockAlert}</td>
                         <td>
                           {isLowStock ? (
@@ -581,7 +581,7 @@ export const ProductsPage: React.FC = () => {
       <Modal
         isOpen={isAdjustModalOpen}
         onClose={() => setIsAdjustModalOpen(false)}
-        title={`Adjust Stock — ${selectedProduct?.name}`}
+        title={`Adjust Stock - ${selectedProduct?.name}`}
       >
         <form onSubmit={handleAdjustSubmit}>
           <div style={{ marginBottom: '16px', padding: '12px', background: '#f1f5f9', borderRadius: '6px' }}>
@@ -700,7 +700,7 @@ export const ProductsPage: React.FC = () => {
       <Modal
         isOpen={isLogsModalOpen}
         onClose={() => setIsLogsModalOpen(false)}
-        title={`Stock Audit History — ${selectedProduct?.name}`}
+        title={`Stock Audit History - ${selectedProduct?.name}`}
         size="large"
       >
         <div style={{ marginBottom: '14px', fontSize: '12px', color: '#64748b' }}>

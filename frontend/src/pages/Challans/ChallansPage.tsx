@@ -373,11 +373,11 @@ export const ChallansPage: React.FC = () => {
               onChange={(e) => setCustomerId(e.target.value)}
             >
               <option value="" disabled>
-                -- Choose Customer --
+                - Choose Customer -
               </option>
               {customersList.map((cust) => (
                 <option key={cust.id} value={cust.id}>
-                  {cust.businessName} — {cust.name} ({cust.customerType})
+                  {cust.businessName} - {cust.name} ({cust.customerType})
                 </option>
               ))}
             </select>
@@ -421,11 +421,11 @@ export const ChallansPage: React.FC = () => {
                           onChange={(e) => updateItemRow(idx, 'productId', e.target.value)}
                         >
                           <option value="" disabled>
-                            -- Choose Product --
+                            - Choose Product -
                           </option>
                           {productsList.map((prod) => (
                             <option key={prod.id} value={prod.id}>
-                              {prod.name} ({prod.sku}) — Stock: {prod.currentStock} units
+                              {prod.name} ({prod.sku}) - Stock: {prod.currentStock} units
                             </option>
                           ))}
                         </select>
@@ -448,7 +448,7 @@ export const ChallansPage: React.FC = () => {
                         />
                       </td>
                       <td>
-                        {selectedProd ? `₹${parseFloat(String(selectedProd.unitPrice)).toFixed(2)}` : '—'}
+                        {selectedProd ? `₹${parseFloat(String(selectedProd.unitPrice)).toFixed(2)}` : '-'}
                       </td>
                       <td style={{ textAlign: 'center' }}>
                         {items.length > 1 && (

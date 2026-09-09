@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('--- Seeding Database ---');
+  console.log('- Seeding Database -');
 
   const salt = await bcrypt.genSalt(10);
   const adminPasswordHash = await bcrypt.hash('Admin@123', salt);
@@ -214,7 +214,7 @@ async function main() {
   }
 
   console.log('Seeded 5 Products with initial stock logs.');
-  console.log('--- Seed Completed Successfully ---');
+  console.log('- Seed Completed Successfully -');
 }
 
 main()
