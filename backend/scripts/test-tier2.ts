@@ -13,6 +13,7 @@
  * 10. Product search, category filter, and pagination (GET /products)
  * 11. Product low-stock alert filter (GET /products?lowStockOnly=true)
  */
+import process from 'node:process';
 
 const BASE_URL = process.env.API_URL || 'http://localhost:5000/api';
 
