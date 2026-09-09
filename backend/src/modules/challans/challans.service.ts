@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma, type Product } from '@prisma/client';
 import prisma from '../../config/prisma';
 import { AppError } from '../../errors/AppError';
 import { generateChallanNumber } from '../../utils/challanNumber';
@@ -29,17 +29,17 @@ export class ChallansService {
     const productIds = Array.from(productQtyMap.keys());
 
     // 3. Fetch products to get snapshots
-    const products = await prisma.product.findMany({
+    const products: Product[] = await prisma.product.findMany({
       where: { id: { in: productIds } },
     });
 
     if (products.length !== productIds.length) {
-      const foundIds = new Set(products.map((p) => p.id));
+      const foundIds = new Set(products.map((p: Product) => p.id));
       const missing = productIds.filter((id) => !foundIds.has(id));
       throw AppError.badRequest(`Invalid product IDs: ${missing.join(', ')}`);
     }
 
-    const productMap = new Map(products.map((p) => [p.id, p]));
+    const productMap = new Map(products.map((p: Product) => [p.id, p]));
 
     // 4. Calculate total quantity & build items with snapshots
     let totalQuantity = 0;
@@ -55,7 +55,7 @@ export class ChallansService {
     });
 
     // 5. Create Challan in DRAFT status inside a transaction to generate sequential challan number safely
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const challanNumber = await generateChallanNumber(tx);
 
       const challan = await tx.challan.create({
@@ -107,7 +107,7 @@ export class ChallansService {
       }
     }
 
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       let totalQuantity = existing.totalQuantity;
 
       if (data.items) {
@@ -118,17 +118,17 @@ export class ChallansService {
         }
 
         const productIds = Array.from(productQtyMap.keys());
-        const products = await tx.product.findMany({
+        const products: Product[] = await tx.product.findMany({
           where: { id: { in: productIds } },
         });
 
         if (products.length !== productIds.length) {
-          const foundIds = new Set(products.map((p) => p.id));
+          const foundIds = new Set(products.map((p: Product) => p.id));
           const missing = productIds.filter((id) => !foundIds.has(id));
           throw AppError.badRequest(`Invalid product IDs: ${missing.join(', ')}`);
         }
 
-        const productMap = new Map(products.map((p) => [p.id, p]));
+        const productMap = new Map(products.map((p: Product) => [p.id, p]));
 
         // Delete existing items
         await tx.challanItem.deleteMany({
@@ -173,7 +173,7 @@ export class ChallansService {
   }
 
   static async confirmChallan(id: string, userId: string) {
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       // 1. Fetch Challan with line items
       const challan = await tx.challan.findUnique({
         where: { id },
@@ -217,11 +217,11 @@ export class ChallansService {
       `;
 
       // 4. Fetch the locked products
-      const products = await tx.product.findMany({
+      const products: Product[] = await tx.product.findMany({
         where: { id: { in: productIds } },
       });
 
-      const productMap = new Map(products.map((p) => [p.id, p]));
+      const productMap = new Map(products.map((p: Product) => [p.id, p]));
 
       // 5. Verify stock availability for EVERY line item
       const shortages: {
@@ -327,7 +327,7 @@ export class ChallansService {
   }
 
   static async cancelChallan(id: string, userId: string) {
-    return await prisma.$transaction(async (tx) => {
+    return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       const challan = await tx.challan.findUnique({
         where: { id },
         include: { items: true },
