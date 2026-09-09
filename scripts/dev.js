@@ -21,7 +21,10 @@ const frontend = spawn('npm', ['run', 'dev'], {
   stdio: 'inherit',
 });
 
+let isCleaningUp = false;
 function cleanup() {
+  if (isCleaningUp) return;
+  isCleaningUp = true;
   console.log('\n🛑 Shutting down servers...');
   if (process.platform === 'win32') {
     if (backend.pid) {
@@ -31,11 +34,25 @@ function cleanup() {
       try { spawn('taskkill', ['/pid', frontend.pid.toString(), '/f', '/t']); } catch (_) {}
     }
   } else {
-    backend.kill('SIGTERM');
-    frontend.kill('SIGTERM');
+    try { backend.kill('SIGTERM'); } catch (_) {}
+    try { frontend.kill('SIGTERM'); } catch (_) {}
   }
-  process.exit();
+  setTimeout(() => process.exit(), 500);
 }
+
+backend.on('exit', (code) => {
+  if (code && code !== 0 && !isCleaningUp) {
+    console.error(`\n⚠️ Backend exited with code ${code}`);
+    cleanup();
+  }
+});
+
+frontend.on('exit', (code) => {
+  if (code && code !== 0 && !isCleaningUp) {
+    console.error(`\n⚠️ Frontend exited with code ${code}`);
+    cleanup();
+  }
+});
 
 process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
