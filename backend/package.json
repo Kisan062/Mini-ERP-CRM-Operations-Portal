@@ -10,7 +10,7 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:deploy": "prisma migrate deploy",
-    "seed": "tsx prisma/seed.ts",
+    "seed": "npx tsx prisma/seed.ts",
     "test:tier1": "tsx scripts/test-tier1.ts",
     "test:tier2": "tsx scripts/test-tier2.ts",
     "test:users": "tsx scripts/test-users.ts"
@@ -25,6 +25,9 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
+    "prisma": "^6.4.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -32,9 +35,6 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.13.5",
-    "prisma": "^6.4.1",
-    "tsx": "^4.19.3",
-    "typescript": "^5.7.3"
+    "@types/node": "^22.13.5"
   }
 }
